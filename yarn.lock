@@ -1635,18 +1635,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bucketeer/js-client-sdk@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "@bucketeer/js-client-sdk@npm:2.2.4"
-  checksum: fda7cad47880a4e874dff5b9e197cccdf5eb6678849658271b0fca3c24e0cd75cac7f9c82ca337a504365adc9e93169f6f09eacfd67cc8158eb637008488cf55
-  languageName: node
-  linkType: hard
-
 "@bucketeer/react-native-client-sdk@workspace:.":
   version: 0.0.0-use.local
   resolution: "@bucketeer/react-native-client-sdk@workspace:."
   dependencies:
-    "@bucketeer/js-client-sdk": ^2.2.4
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
     "@eslint/eslintrc": ^3.3.0
@@ -1656,6 +1648,7 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": ^19.0.12
+    bkt-js-client-sdk: ^2.2.6
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -1666,6 +1659,7 @@ __metadata:
     react: 18.3.1
     react-native: 0.76.9
     react-native-builder-bob: ^0.40.6
+    react-native-uuid: ^2.0.3
     release-it: ^17.10.0
     typescript: ^5.2.2
   peerDependencies:
@@ -4386,6 +4380,13 @@ __metadata:
   version: 1.6.52
   resolution: "big-integer@npm:1.6.52"
   checksum: 6e86885787a20fed96521958ae9086960e4e4b5e74d04f3ef7513d4d0ad631a9f3bde2730fc8aaa4b00419fc865f6ec573e5320234531ef37505da7da192c40b
+  languageName: node
+  linkType: hard
+
+"bkt-js-client-sdk@npm:^2.2.6":
+  version: 2.2.6
+  resolution: "bkt-js-client-sdk@npm:2.2.6"
+  checksum: 4f02cd8863423bb10683e98e552300a8a3a5c5f3aa271a0716bcbe47b3edc42ac2a35d3b02d3b8ddc32378f5f32762807ddb160f77fc5da84ce7811f66110447
   languageName: node
   linkType: hard
 
@@ -11829,6 +11830,13 @@ __metadata:
     react-native-web: ~0.19.13
   languageName: unknown
   linkType: soft
+
+"react-native-uuid@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "react-native-uuid@npm:2.0.3"
+  checksum: e47774481feaed5d38f75fb4b03f5189c03e7452038f1b0fa56677add8a8bdef64ec7ad5e83f9fa761d8788cac5c8e554ade07e82a2818145337df7c883e2124
+  languageName: node
+  linkType: hard
 
 "react-native-web@npm:~0.19.13":
   version: 0.19.13

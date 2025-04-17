@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react';
-import { multiply, initBKTSDK } from '@bucketeer/react-native-client-sdk';
+import { initBKTSDK } from '@bucketeer/react-native-client-sdk';
 import { Text, View, StyleSheet } from 'react-native';
+import { getBKTClient } from 'bkt-js-client-sdk';
 
 export default function App() {
   const [initialized, setInitialized] = useState(false);
-  const [result, setResult] = useState<number | null>(null);
+  const [result, setResult] = useState<string | null>(null);
 
   useEffect(() => {
     const initialize = async () => {
       try {
         await initBKTSDK();
-        setResult(multiply(3, 7));
         setInitialized(true);
+        console.log('Bucketeer SDK initialized successfully');
+        const client = getBKTClient();
+        const evaluation = await client!.stringVariation(
+          'feature-js-e2e-string',
+          'default'
+        );
+        console.log('Evaluation result:', evaluation);
+        setResult(evaluation);
       } catch (error) {
         console.error('Failed to initialize Bucketeer SDK:', error);
       }
@@ -29,6 +37,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>Demo React Native SDK - Expo Go!</Text>
+      <Text>TAG: javascript</Text>
+      <Text>FID: feature-js-e2e-string</Text>
       <Text>Result: {result}</Text>
     </View>
   );
