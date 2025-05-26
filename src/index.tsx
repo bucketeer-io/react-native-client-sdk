@@ -5,6 +5,18 @@ import {
 } from 'bkt-js-client-sdk';
 import uuid from 'react-native-uuid';
 
+// Export React components and hooks
+export { BucketeerProvider } from './BucketeerProvider';
+export { BucketeerContext, Provider, Consumer } from './context';
+export type { BucketeerContextType } from './context';
+export {
+  useBooleanVariation,
+  useStringVariation,
+  useNumberVariation,
+  useObjectVariation,
+  useBucketeerClient,
+} from './hooks';
+
 export async function initBKTSDK(): Promise<void> {
   const config = defineBKTConfig({
     apiKey: 'test_api_key',
