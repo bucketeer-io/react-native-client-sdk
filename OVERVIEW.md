@@ -73,6 +73,7 @@ const isEnabled = useBooleanVariation('premium-feature', false);
 - The `BucketeerProvider` establishes an event listener with the Bucketeer client
 - When flags change, the `lastUpdated` timestamp is automatically updated
 - All hooks depend on `lastUpdated`, triggering React re-renders
+- However, React's built-in optimization prevents actual DOM updates when flag values remain unchanged
 - Components receive fresh flag values without manual intervention
 
 ### 🎯 **React's Declarative Updates**
@@ -101,10 +102,36 @@ const maxItems = useNumberVariation('max-items', 10); // Always a number
 const config = useObjectVariation('settings', { theme: 'dark' }); // Type-checked
 ```
 
+### 🔄 **Re-rendering Behavior**
+
+The SDK uses a simple approach that relies on React's built-in optimizations:
+
+```tsx
+// When ANY flag changes on the server:
+// 1. All components using hooks will re-render (React lifecycle)
+// 2. But React optimizes away actual DOM updates for unchanged values
+
+function ComponentA() {
+  const featureA = useBooleanVariation('feature-a', false); // Changed: true → false
+  return <div>{featureA && 'Feature A'}</div>; // ✅ DOM updates
+}
+
+function ComponentB() {
+  const featureB = useBooleanVariation('feature-b', false); // Unchanged: false → false  
+  return <div>{featureB && 'Feature B'}</div>; // ✅ No DOM update (React optimization)
+}
+```
+
+**Why this simple approach works well:**
+- **Simplicity**: No complex flag tracking or selective subscriptions
+- **Reliability**: Never miss flag updates due to subscription bugs
+- **Performance**: React's `useState` optimization prevents unnecessary DOM updates
+- **Consistency**: All components stay synchronized automatically
+
 ### ⚡ **Performance Optimized**
 
 - **Single Context**: Shared client instance across all components
-- **Automatic Re-renders**: All components using hooks re-render when any flag changes
+- **React-Optimized Re-renders**: Components re-render when flags change, but React's built-in optimization prevents unnecessary updates when flag values remain the same
 - **Efficient Caching**: Client handles caching and network optimization
 - **Minimal Bundle**: Lightweight wrapper around the core SDK
 
