@@ -1,39 +1,21 @@
-import {
-  defineBKTConfig,
-  defineBKTUser,
-  initializeBKTClient,
-} from 'bkt-js-client-sdk';
+import { defineBKTConfig } from 'bkt-js-client-sdk';
+import type { BKTConfig, RawBKTConfig } from 'bkt-js-client-sdk';
+import { version } from 'react';
 import uuid from 'react-native-uuid';
 
-// Export React components and hooks
-export { BucketeerProvider } from './BucketeerProvider';
-export { BucketeerContext, Provider, Consumer } from './context';
-export type { BucketeerContextType } from './context';
-export {
-  useBooleanVariation,
-  useStringVariation,
-  useNumberVariation,
-  useObjectVariation,
-  useBucketeerClient,
-} from './hooks';
+export * from 'bkt-js-client-sdk';
 
-export async function initBKTSDK(): Promise<void> {
-  const config = defineBKTConfig({
-    apiKey: 'test_api_key',
-    apiEndpoint: 'https://api.bucketeer.io',
-    appVersion: '0.0.1',
-    featureTag: 'javascript',
+const SOURCE_ID_REACT_NATIVE = 10;
+
+export function defineReactNativeBKTConfig(config: RawBKTConfig): BKTConfig {
+  return defineBKTConfig({
+    ...config,
     idGenerator: new ReactNativeIdGenerator(),
-    fetch: fetch,
+    // Set this to undefined to use the default in-memory storage
+    storageFactory: undefined,
+    wrapperSdkSourceId: SOURCE_ID_REACT_NATIVE,
+    wrapperSdkVersion: version,
   });
-  const user = defineBKTUser({
-    id: '001',
-  });
-  return initializeBKTClient(config, user, 1000);
-}
-
-export function multiply(a: number, b: number): number {
-  return a * b;
 }
 
 class ReactNativeIdGenerator {
