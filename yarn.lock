@@ -1649,7 +1649,7 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": ^19.0.12
-    bkt-react-client-sdk: 0.0.9
+    bkt-react-client-sdk: 0.0.10
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -4395,22 +4395,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bkt-js-client-sdk@npm:2.2.13":
-  version: 2.2.13
-  resolution: "bkt-js-client-sdk@npm:2.2.13"
-  checksum: 91dac2456e3f0b9d9d4954a068fe61a34b8b5660989f800ecac98521345a4770a33910f88f33ff7260c6a3c57c2627d5fd936e84e6aafa6a2fbeae32c6fd2bac
+"bkt-js-client-sdk@npm:2.2.14":
+  version: 2.2.14
+  resolution: "bkt-js-client-sdk@npm:2.2.14"
+  checksum: 4dc213c088b5d4513a1f77652421c18dd7d0068954aa166f4fea1f39a8000a76b4245fdfc964cdf595290bf9d20619adddf52df69945e2bc887e05e0d4a2ad50
   languageName: node
   linkType: hard
 
-"bkt-react-client-sdk@npm:0.0.9":
-  version: 0.0.9
-  resolution: "bkt-react-client-sdk@npm:0.0.9"
+"bkt-react-client-sdk@npm:0.0.10":
+  version: 0.0.10
+  resolution: "bkt-react-client-sdk@npm:0.0.10"
   dependencies:
-    bkt-js-client-sdk: 2.2.13
+    bkt-js-client-sdk: 2.2.14
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 16c36b90f418f7737a22f792ae3958b9a427ca3a63cf81b551e456d5b0bfbe776d83978a36229f1fea0d9152e258734fd0268c4581442febb94d1b0debfeac3c
+  checksum: 78dcc22a3e03e7fe14956f34add344fc80b814f49fbc07c172d4d165318ea3bacb3e36d486342fc489653b8d0b4a530eb8788013ec1d61fd3658c7f3d58021bd
   languageName: node
   linkType: hard
 
