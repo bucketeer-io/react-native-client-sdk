@@ -15,6 +15,7 @@ export function defineReactNativeBKTConfig(config: RawBKTConfig): BKTConfig {
     storageFactory: undefined,
     wrapperSdkSourceId: SOURCE_ID_REACT_NATIVE,
     wrapperSdkVersion: SDK_VERSION,
+    userAgent: `Bucketeer React Native SDK(${SDK_VERSION})`,
   });
 }
 
