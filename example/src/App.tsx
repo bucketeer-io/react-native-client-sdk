@@ -6,9 +6,12 @@ import {
 } from '@bucketeer/react-native-client-sdk';
 import { defineBKTUser } from 'bkt-js-client-sdk';
 
+const API_ENDPOINT = 'https://api-dev.bucketeer.jp';
+const API_KEY = 'api-key';
+
 const config = defineReactNativeBKTConfig({
-  apiKey: 'your-api-key',
-  apiEndpoint: 'https://api.bucketeer.io',
+  apiKey: API_KEY, //'your-api-key',
+  apiEndpoint: API_ENDPOINT, //'https://api.bucketeer.io',
   appVersion: '1.0.0',
   featureTag: 'mobile',
 });
@@ -22,7 +25,7 @@ const user = defineBKTUser({
 });
 
 function FeatureFlagDemo() {
-  const theme = useStringVariation('app-theme', 'light');
+  const theme = useStringVariation('app-theme', 'dark');
   const isDark = theme === 'dark';
 
   return (

@@ -12,7 +12,6 @@ export function defineReactNativeBKTConfig(config: RawBKTConfig): BKTConfig {
     ...config,
     idGenerator: new ReactNativeIdGenerator(),
     // Set this to undefined to use the default in-memory storage
-    storageFactory: undefined,
     wrapperSdkSourceId: SOURCE_ID_REACT_NATIVE,
     wrapperSdkVersion: SDK_VERSION,
     userAgent: `Bucketeer React Native SDK(${SDK_VERSION})`,

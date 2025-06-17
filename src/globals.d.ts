@@ -1,1 +1,1 @@
-declare const __BKT_SDK_VERSION__: string;
+// Global type declarations can be added here when needed
