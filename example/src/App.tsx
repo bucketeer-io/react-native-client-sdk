@@ -9,8 +9,7 @@ import { defineBKTUser } from 'bkt-js-client-sdk';
 import TestScreen from './TestScreen';
 
 const API_ENDPOINT = 'https://api-dev.bucketeer.jp';
-const API_KEY =
-  '68f36f74aed68a63c6a0de5cf2de2f343c3714c0d1be4083f8fa679a39644a7c';
+const API_KEY = 'API_KEY';
 
 const config = defineReactNativeBKTConfig({
   apiKey: API_KEY, //'your-api-key',
@@ -20,7 +19,7 @@ const config = defineReactNativeBKTConfig({
 });
 
 const user = defineBKTUser({
-  id: 'rn-e2e-user-123',
+  id: 'js-e2e-user-123',
   customAttributes: {
     platform: 'ios',
     version: '1.0.0',

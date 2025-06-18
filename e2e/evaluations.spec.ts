@@ -1,6 +1,10 @@
 import { device, element, by, expect, waitFor } from 'detox';
 
 describe('E2E Feature Flag Evaluations', () => {
+  beforeAll(async () => {
+    await device.launchApp();
+  });
+
   beforeEach(async () => {
     await device.reloadReactNative();
 

@@ -14,12 +14,13 @@ module.exports = {
       binaryPath:
         'example/ios/build/Build/Products/Debug-iphonesimulator/example.app',
       build:
-        'cd example && npx expo run:ios --scheme example --configuration Debug --device "iPhone 16 Pro"',
+        'xcodebuild -workspace example/ios/example.xcworkspace -scheme example -configuration Debug -sdk iphonesimulator -derivedDataPath example/ios/build',
     },
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'example/android/app/build/outputs/apk/debug/app-debug.apk',
-      build: 'cd example && npx expo run:android --variant debug',
+      build:
+        'cd example/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug',
     },
   },
   devices: {
