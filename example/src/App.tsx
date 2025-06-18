@@ -1,13 +1,16 @@
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   BucketeerProvider,
   defineReactNativeBKTConfig,
   useStringVariation,
 } from '@bucketeer/react-native-client-sdk';
 import { defineBKTUser } from 'bkt-js-client-sdk';
+import TestScreen from './TestScreen';
 
 const API_ENDPOINT = 'https://api-dev.bucketeer.jp';
-const API_KEY = 'api-key';
+const API_KEY =
+  '68f36f74aed68a63c6a0de5cf2de2f343c3714c0d1be4083f8fa679a39644a7c';
 
 const config = defineReactNativeBKTConfig({
   apiKey: API_KEY, //'your-api-key',
@@ -17,12 +20,46 @@ const config = defineReactNativeBKTConfig({
 });
 
 const user = defineBKTUser({
-  id: 'user-123',
+  id: 'rn-e2e-user-123',
   customAttributes: {
     platform: 'ios',
     version: '1.0.0',
   },
 });
+
+function AppContent() {
+  const [currentScreen, setCurrentScreen] = React.useState<'demo' | 'test'>(
+    'demo'
+  );
+
+  if (currentScreen === 'test') {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          testID="back-to-demo-button"
+          style={styles.navButton}
+          onPress={() => setCurrentScreen('demo')}
+        >
+          <Text style={styles.navButtonText}>← Back to Demo</Text>
+        </TouchableOpacity>
+        <TestScreen />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        testID="open-test-screen-button"
+        style={styles.navButton}
+        onPress={() => setCurrentScreen('test')}
+      >
+        <Text style={styles.navButtonText}>Open E2E Test Screen →</Text>
+      </TouchableOpacity>
+      <FeatureFlagDemo />
+    </View>
+  );
+}
 
 function FeatureFlagDemo() {
   const theme = useStringVariation('app-theme', 'dark');
@@ -48,7 +85,7 @@ function FeatureFlagDemo() {
 export default function App() {
   return (
     <BucketeerProvider config={config} user={user}>
-      <FeatureFlagDemo />
+      <AppContent />
     </BucketeerProvider>
   );
 }
@@ -83,5 +120,18 @@ const styles = StyleSheet.create({
   },
   textHintLight: {
     color: '#555',
+  },
+  navButton: {
+    backgroundColor: '#2196F3',
+    padding: 12,
+    borderRadius: 8,
+    margin: 10,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+  },
+  navButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
