@@ -80,10 +80,12 @@ export default function StringVariationScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    width: '100%',
     backgroundColor: '#f8f9fa',
   },
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: '#f8f9fa',
   },
   header: {

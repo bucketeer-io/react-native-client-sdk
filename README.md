@@ -57,5 +57,6 @@ For detailed API usage, see the [@bucketeer/react-client-sdk documentation](http
 Apache 2.0
 
 
-yarn example ios --configuration Release --no-bundler        
+yarn example ios --configuration Release --no-bundler       
+yarn example android --variant release --no-bundler
 maestro test e2e/home.yml

@@ -78,6 +78,7 @@ export default function NumberVariationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: '#f8f9fa',
   },
   header: {
