@@ -55,3 +55,7 @@ For detailed API usage, see the [@bucketeer/react-client-sdk documentation](http
 ## License
 
 Apache 2.0
+
+
+yarn example ios --configuration Release --no-bundler        
+maestro test e2e/home.yml

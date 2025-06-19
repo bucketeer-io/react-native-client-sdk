@@ -1,37 +1,48 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import {
   BucketeerProvider,
   defineReactNativeBKTConfig,
   useStringVariation,
 } from '@bucketeer/react-native-client-sdk';
 import { defineBKTUser } from 'bkt-js-client-sdk';
-import TestScreen from './TestScreen';
+import StringVariationScreen from './StringVariationScreen';
+import BooleanVariationScreen from './BooleanVariationScreen';
+import NumberVariationScreen from './NumberVariationScreen';
+import ObjectVariationScreen from './ObjectVariationScreen';
+import { FEATURE_TAG, USER_ID } from '../../e2e/constants';
 
-const API_ENDPOINT = 'https://api-dev.bucketeer.jp';
-const API_KEY = 'API_KEY';
+const API_ENDPOINT =
+  process.env.EXPO_PUBLIC_BKT_API_ENDPOINT || 'https://api.bucketeer.io';
+const API_KEY = process.env.EXPO_PUBLIC_BKT_API_KEY || 'api-key';
 
 const config = defineReactNativeBKTConfig({
   apiKey: API_KEY, //'your-api-key',
   apiEndpoint: API_ENDPOINT, //'https://api.bucketeer.io',
   appVersion: '1.0.0',
-  featureTag: 'mobile',
+  featureTag: FEATURE_TAG,
 });
 
 const user = defineBKTUser({
-  id: 'js-e2e-user-123',
+  id: USER_ID,
   customAttributes: {
-    platform: 'ios',
+    platform: 'react-native',
     version: '1.0.0',
   },
 });
 
 function AppContent() {
-  const [currentScreen, setCurrentScreen] = React.useState<'demo' | 'test'>(
-    'demo'
-  );
+  const [currentScreen, setCurrentScreen] = React.useState<
+    'demo' | 'string' | 'boolean' | 'number' | 'object'
+  >('demo');
 
-  if (currentScreen === 'test') {
+  if (currentScreen === 'string') {
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -41,21 +52,91 @@ function AppContent() {
         >
           <Text style={styles.navButtonText}>← Back to Demo</Text>
         </TouchableOpacity>
-        <TestScreen />
+        <StringVariationScreen />
+      </View>
+    );
+  }
+
+  if (currentScreen === 'boolean') {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          testID="back-to-demo-button"
+          style={styles.navButton}
+          onPress={() => setCurrentScreen('demo')}
+        >
+          <Text style={styles.navButtonText}>← Back to Demo</Text>
+        </TouchableOpacity>
+        <BooleanVariationScreen />
+      </View>
+    );
+  }
+
+  if (currentScreen === 'number') {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          testID="back-to-demo-button"
+          style={styles.navButton}
+          onPress={() => setCurrentScreen('demo')}
+        >
+          <Text style={styles.navButtonText}>← Back to Demo</Text>
+        </TouchableOpacity>
+        <NumberVariationScreen />
+      </View>
+    );
+  }
+
+  if (currentScreen === 'object') {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          testID="back-to-demo-button"
+          style={styles.navButton}
+          onPress={() => setCurrentScreen('demo')}
+        >
+          <Text style={styles.navButtonText}>← Back to Demo</Text>
+        </TouchableOpacity>
+        <ObjectVariationScreen />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        testID="open-test-screen-button"
-        style={styles.navButton}
-        onPress={() => setCurrentScreen('test')}
-      >
-        <Text style={styles.navButtonText}>Open E2E Test Screen →</Text>
-      </TouchableOpacity>
       <FeatureFlagDemo />
+
+      <TouchableOpacity
+        testID="open-string-screen-button"
+        style={styles.navButton}
+        onPress={() => setCurrentScreen('string')}
+      >
+        <Text style={styles.navButtonText}>String Variation →</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        testID="open-boolean-screen-button"
+        style={styles.navButton}
+        onPress={() => setCurrentScreen('boolean')}
+      >
+        <Text style={styles.navButtonText}>Boolean Variation →</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        testID="open-number-screen-button"
+        style={styles.navButton}
+        onPress={() => setCurrentScreen('number')}
+      >
+        <Text style={styles.navButtonText}>Number Variation →</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        testID="open-object-screen-button"
+        style={styles.navButton}
+        onPress={() => setCurrentScreen('object')}
+      >
+        <Text style={styles.navButtonText}>Object Variation →</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -83,13 +164,19 @@ function FeatureFlagDemo() {
 
 export default function App() {
   return (
-    <BucketeerProvider config={config} user={user}>
-      <AppContent />
-    </BucketeerProvider>
+    <SafeAreaView style={styles.safeArea}>
+      <BucketeerProvider config={config} user={user}>
+        <AppContent />
+      </BucketeerProvider>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
   container: {
     flex: 1,
     alignItems: 'center',

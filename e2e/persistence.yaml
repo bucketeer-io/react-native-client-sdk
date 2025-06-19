@@ -1,0 +1,40 @@
+appId: clientsdk.example
+
+---
+# Test app persistence after restart
+- launchApp
+- tapOn: "open-test-screen-button"
+- assertVisible: "SDK Ready: ✅"
+
+# Verify initial flag values
+- assertVisible:
+    id: "string-flag-value"
+    text: "value-1"
+- assertVisible:
+    id: "boolean-flag-value"
+    text: "true"
+- assertVisible:
+    id: "number-flag-value"
+    text: "10"
+- assertVisible:
+    id: "object-flag-value"
+    text: '{"key":"value-1"}'
+
+# Restart app (background and relaunch)
+- pressKey: Home
+- launchApp
+- tapOn: "open-test-screen-button"
+
+# Verify persistence after restart
+- assertVisible:
+    id: "string-flag-value"
+    text: "value-1"
+- assertVisible:
+    id: "boolean-flag-value"
+    text: "true"
+- assertVisible:
+    id: "number-flag-value"
+    text: "10"
+- assertVisible:
+    id: "object-flag-value"
+    text: '{"key":"value-1"}'
