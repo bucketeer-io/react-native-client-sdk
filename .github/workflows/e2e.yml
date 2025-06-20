@@ -51,7 +51,12 @@ jobs:
             ios/Pods
             ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
-
+      - name: Inject environment variables
+        run: |
+          rm -f example/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> example/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> example/.env
+          echo "CI=true" >> example/.env
       - name: Build example app for iOS
         run: |
           yarn build:e2e:ios
