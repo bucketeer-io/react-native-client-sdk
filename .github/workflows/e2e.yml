@@ -26,13 +26,15 @@ jobs:
         run: yarn prepare
 
       - name: Restore CocoaPods cache
-        uses: actions/cache@v4
+        id: cocoapods-cache
+        uses: actions/cache/restore@v4
         with:
           path: |
             ios/Pods
             ios/Podfile.lock
-          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
           restore-keys: |
+            ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
             ${{ runner.os }}-pods-
 
       - name: Install CocoaPods dependencies
@@ -41,13 +43,14 @@ jobs:
           pod install
           cd ../..
 
-      - name: Save CocoaPods cache
-        uses: actions/cache@v4
+      - name: Cache dependencies
+        if: steps.cocoapods-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
           path: |
-            example/ios/Pods
-            example/ios/Podfile.lock
-          key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
+            ios/Pods
+            ios/Podfile.lock
+          key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
 
       - name: Build example app for iOS
         run: |
@@ -58,7 +61,7 @@ jobs:
         with:
           flow: e2e
           report: report.xml
-          
+
       - name: Upload iOS E2E test results (report.xml)
         uses: actions/upload-artifact@v4
         with:
