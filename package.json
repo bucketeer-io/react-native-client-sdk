@@ -36,7 +36,7 @@
     "test": "jest",
     "test:e2e:ios": "detox test --configuration ios.sim.debug",
     "test:e2e:android": "detox test --configuration android.emu.debug",
-    "build:e2e:ios": "example ios --configuration Release --no-bundler ",
+    "build:e2e:ios": "yarn example ios --configuration Release --no-bundler ",
     "build:e2e:android": "yarn example android --variant release --no-bundler",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
