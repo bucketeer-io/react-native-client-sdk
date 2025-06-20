@@ -30,8 +30,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            ios/Pods
-            ios/Podfile.lock
+            example/ios/Pods
+            example/ios/Podfile.lock
           key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
@@ -48,8 +48,8 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            ios/Pods
-            ios/Podfile.lock
+            example/ios/Pods
+            example/ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
       - name: Inject environment variables
         run: |
