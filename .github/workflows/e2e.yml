@@ -72,3 +72,36 @@ jobs:
         with:
           name: e2e-ios-results
           path: report.xml
+
+  build-android:
+    runs-on: macos-15-xlarge
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Build package
+        run: yarn prepare
+
+      - name: Inject environment variables
+        run: |
+          rm -f example/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> example/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> example/.env
+          echo "CI=true" >> example/.env
+      - name: Build example app for iOS
+        run: |
+          yarn build:e2e:android
+
+      - name: Setup Maestro
+        uses: dniHze/maestro-test-action@v1
+      - name: Run Android E2E tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          ram-size: 2048M
+          target: default
+          script: maestro test e2e --format=junit --output=report.xml --no-ansi
