@@ -43,14 +43,6 @@ jobs:
           pod install
           cd ../..
 
-      - name: Cache dependencies
-        if: steps.cocoapods-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            example/ios/Pods
-            example/ios/Podfile.lock
-          key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
       - name: Inject environment variables
         run: |
           rm -f example/.env
@@ -60,6 +52,15 @@ jobs:
       - name: Build example app for iOS
         run: |
           yarn build:e2e:ios
+
+      - name: Cache cocoapods dependencies
+        if: steps.cocoapods-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            example/ios/Pods
+            example/ios/Podfile.lock
+          key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
 
       - name: Run iOS E2E tests
         uses: dniHze/maestro-test-action@v1
@@ -76,6 +77,17 @@ jobs:
   build-android:
     runs-on: macos-15-xlarge
     timeout-minutes: 45
+    strategy:
+      matrix:
+        api-level:
+          - 33
+        arch:
+          - arm64
+        target:
+          - default  # Faster than google_apis
+        cores:
+          - 8
+      fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,22 +98,44 @@ jobs:
       - name: Build package
         run: yarn prepare
 
+      - name: AVD cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
+          restore-keys: |
+            avd-${{ matrix.api-level }}-${{ matrix.target }}-
+            avd-${{ matrix.api-level }}-      
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          cores: ${{ matrix.cores }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048 -no-snapshot-load
+          disable-animations: true
+          script: echo "Generated AVD snapshot for caching"
+          
       - name: Inject environment variables
         run: |
           rm -f example/.env
           echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> example/.env
           echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> example/.env
           echo "CI=true" >> example/.env
-      - name: Build example app for iOS
-        run: |
-          yarn build:e2e:android
 
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
-      - name: Run Android E2E tests
+      - name: Build && Run Android E2E tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
           ram-size: 2048M
           target: default
-          script: maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: yarn build:e2e:android && maestro test e2e --format=junit --output=report.xml --no-ansi
