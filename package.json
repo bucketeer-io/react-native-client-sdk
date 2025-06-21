@@ -34,8 +34,7 @@
   "scripts": {
     "example": "yarn workspace react-native-client-sdk-example",
     "test": "jest",
-    "test:e2e:ios": "detox test --configuration ios.sim.debug",
-    "test:e2e:android": "detox test --configuration android.emu.debug",
+    "test:e2e": "maestro test e2e --format=junit --output=report.xml --no-ansi",
     "build:e2e:ios": "yarn example ios --configuration Release --no-bundler ",
     "build:e2e:android": "yarn example android --variant release --no-bundler",
     "typecheck": "tsc",

@@ -50,15 +50,8 @@ export default function App() {
 ## API Reference
 
 This SDK re-exports all APIs from the React SDK.  
-For detailed API usage, see the [@bucketeer/react-client-sdk documentation](https://github.com/bucketeer-io/react-client-sdk#usage).
+For detailed API usage, see the [@bucketeer/react-client-sdk documentation](https://github.com/bucketeer-io/react-client-sdk/blob/main/README.md#usage).
 
 ## License
 
 Apache 2.0
-
-
-yarn example ios --configuration Release --no-bundler       
-yarn example android --variant release --no-bundler
-maestro test e2e/home.yml
-
-https://github.com/marketplace/actions/maestro-test-action
