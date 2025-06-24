@@ -2,7 +2,7 @@ jest.mock('bkt-js-client-sdk', () => ({
   defineBKTConfig: jest.fn(),
 }));
 
-import { defineReactNativeBKTConfig } from '../index';
+import { defineBKTConfigForReactNative } from '../index';
 import { SOURCE_ID_REACT_NATIVE } from '../SourceId';
 import { SDK_VERSION } from '../version';
 
@@ -12,7 +12,7 @@ const mockDefineBKTConfig = defineBKTConfig as jest.MockedFunction<
   typeof defineBKTConfig
 >;
 
-describe('defineReactNativeBKTConfig - mock defineBKTConfig', () => {
+describe('defineBKTConfigForReactNative - mock defineBKTConfig', () => {
   const baseConfig = {
     apiKey: 'test-key',
     apiEndpoint: 'https://api.example.com',
@@ -30,7 +30,7 @@ describe('defineReactNativeBKTConfig - mock defineBKTConfig', () => {
   });
 
   it('should call defineBKTConfig with all required config fields', () => {
-    defineReactNativeBKTConfig(baseConfig);
+    defineBKTConfigForReactNative(baseConfig);
     expect(mockDefineBKTConfig).toHaveBeenCalledWith(
       expect.objectContaining({
         ...baseConfig,

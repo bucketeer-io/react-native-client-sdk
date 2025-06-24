@@ -2,14 +2,15 @@ import { View, Text, ScrollView } from 'react-native';
 import {
   useObjectVariation,
   useObjectVariationDetails,
-  useBucketeerClient,
+  BucketeerContext,
 } from '@bucketeer/react-native-client-sdk';
 import { FEATURE_ID_JSON } from '../../e2e/constants';
 import { DetailRow } from './DetailRow';
 import { styles } from './styles';
+import { useContext } from 'react';
 
 export default function ObjectVariationScreen() {
-  const { client } = useBucketeerClient();
+  const { client } = useContext(BucketeerContext);
 
   const objectValue = useObjectVariation<{ key: string }>(FEATURE_ID_JSON, {
     key: 'default',

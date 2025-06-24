@@ -7,7 +7,7 @@ import { ReactNativeIdGenerator } from './IdGenerator';
 export * from 'bkt-js-client-sdk';
 export * from 'bkt-react-client-sdk';
 
-export function defineReactNativeBKTConfig(config: RawBKTConfig): BKTConfig {
+export function defineBKTConfigForReactNative(config: RawBKTConfig): BKTConfig {
   return defineBKTConfig({
     ...config,
     idGenerator: new ReactNativeIdGenerator(),

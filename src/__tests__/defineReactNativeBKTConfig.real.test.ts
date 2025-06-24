@@ -1,9 +1,9 @@
-import { defineReactNativeBKTConfig } from '../index';
+import { defineBKTConfigForReactNative } from '../index';
 import { SOURCE_ID_REACT_NATIVE } from '../SourceId';
 import { SDK_VERSION } from '../version';
 import { ReactNativeIdGenerator } from '../IdGenerator';
 
-describe('defineReactNativeBKTConfig - Real implementation', () => {
+describe('defineBKTConfigForReactNative - Real implementation', () => {
   const baseConfig = {
     apiKey: 'test-key',
     apiEndpoint: 'https://api.example.com',
@@ -12,7 +12,7 @@ describe('defineReactNativeBKTConfig - Real implementation', () => {
   };
 
   it('should set idGenerator, wrapperSdkSourceId, and wrapperSdkVersion correctly', () => {
-    const config = defineReactNativeBKTConfig(baseConfig);
+    const config = defineBKTConfigForReactNative(baseConfig);
     expect(config.idGenerator).toBeDefined();
     // idGenerator should be an instance of ReactNativeIdGenerator
     expect(config.idGenerator).toBeInstanceOf(ReactNativeIdGenerator);

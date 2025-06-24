@@ -1,7 +1,7 @@
-import { defineReactNativeBKTConfig } from '../index';
+import { defineBKTConfigForReactNative } from '../index';
 
 describe('React Native Bucketeer SDK', () => {
   it('should export', () => {
-    expect(defineReactNativeBKTConfig).toBeDefined();
+    expect(defineBKTConfigForReactNative).toBeDefined();
   });
 });

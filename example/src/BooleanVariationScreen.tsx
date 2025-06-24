@@ -1,15 +1,16 @@
 import { View, Text, ScrollView } from 'react-native';
 import {
+  BucketeerContext,
   useBooleanVariation,
   useBooleanVariationDetails,
-  useBucketeerClient,
 } from '@bucketeer/react-native-client-sdk';
 import { FEATURE_ID_BOOLEAN } from '../../e2e/constants';
 import { DetailRow } from './DetailRow';
 import { styles } from './styles';
+import { useContext } from 'react';
 
 export default function BooleanVariationScreen() {
-  const { client } = useBucketeerClient();
+  const { client } = useContext(BucketeerContext);
 
   const booleanValue = useBooleanVariation(FEATURE_ID_BOOLEAN, false);
   const booleanDetails = useBooleanVariationDetails(FEATURE_ID_BOOLEAN, false);

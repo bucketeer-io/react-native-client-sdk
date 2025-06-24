@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -8,10 +8,14 @@ import {
 } from 'react-native';
 import {
   BucketeerProvider,
-  defineReactNativeBKTConfig,
+  defineBKTConfigForReactNative,
   useStringVariation,
+  initializeBKTClient,
+  type BKTClient,
+  destroyBKTClient,
+  getBKTClient,
+  defineBKTUser,
 } from '@bucketeer/react-native-client-sdk';
-import { defineBKTUser } from 'bkt-js-client-sdk';
 import StringVariationScreen from './StringVariationScreen';
 import BooleanVariationScreen from './BooleanVariationScreen';
 import NumberVariationScreen from './NumberVariationScreen';
@@ -22,7 +26,7 @@ const API_ENDPOINT =
   process.env.EXPO_PUBLIC_BKT_API_ENDPOINT || 'https://api.bucketeer.io';
 const API_KEY = process.env.EXPO_PUBLIC_BKT_API_KEY || 'api-key';
 
-const config = defineReactNativeBKTConfig({
+const config = defineBKTConfigForReactNative({
   apiKey: API_KEY, //'your-api-key',
   apiEndpoint: API_ENDPOINT, //'https://api.bucketeer.io',
   appVersion: '1.0.0',
@@ -163,13 +167,57 @@ function FeatureFlagDemo() {
 }
 
 export default function App() {
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <BucketeerProvider config={config} user={user}>
-        <AppContent />
-      </BucketeerProvider>
-    </SafeAreaView>
-  );
+  const [client, setClient] = useState<BKTClient | null>(null);
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await initializeBKTClient(config, user);
+      } catch (error) {
+        if (error instanceof Error && error.name === 'TimeoutException') {
+          // TimeoutException but The BKTClient SDK has been initialized
+          console.warn(
+            'Bucketeer client initialization timed out, but client is already initialized.'
+          );
+        } else {
+          console.error('Failed to initialize Bucketeer client:', error);
+          return; // Exit early for non-timeout errors
+        }
+      }
+      try {
+        const bktClient = getBKTClient()!;
+        setClient(bktClient);
+      } catch (error) {
+        console.error('Failed to initialize Bucketeer client:', error);
+      }
+    };
+
+    init();
+
+    // Cleanup listener on unmount
+    return () => {
+      destroyBKTClient();
+    };
+  }, []);
+  if (!client) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Initializing Bucketeer Client...</Text>
+          <Text style={styles.desc}>
+            Please wait while the client is being initialized.
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <BucketeerProvider client={client}>
+          <AppContent />
+        </BucketeerProvider>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
