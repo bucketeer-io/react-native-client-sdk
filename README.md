@@ -1,12 +1,19 @@
 # @bucketeer/react-native-client-sdk
 
-A React Native SDK for Bucketeer feature flags, providing React hooks and components for easy integration.  
-**Built on top of [@bucketeer/react-client-sdk](https://github.com/bucketeer-io/react-client-sdk).**
+This SDK enables seamless access to your feature flags in React Native applications using [Bucketeer](https://bucketeer.io/). It provides React hooks and components for easy integration, and is built on top of the robust `@bucketeer/react-client-sdk` and `@bucketeer/js-client-sdk`.
+
+[Bucketeer](https://bucketeer.io) is an open-source platform created by [CyberAgent](https://www.cyberagent.co.jp/en/) to help teams make better decisions, reduce deployment lead time and release risk through feature flags. Bucketeer offers advanced features like dark launches and staged rollouts that perform limited releases based on user attributes, devices, and other segments.
+
+> [!WARNING]
+> This is a beta version. Breaking changes may be introduced before general release.
+
+For documentation related to flags management in Bucketeer, refer to the [Bucketeer documentation website](https://docs.bucketeer.io/sdk/client-side/javascript).
+
 
 ## Key Points
 
 - Most APIs and usage are identical to the React SDK.
-- The main difference: use `defineBKTConfigForReactNative` to build your configuration.
+- The main difference: make sure use `defineBKTConfigForReactNative` to build your configuration.
 
 ## Installation
 
@@ -69,6 +76,10 @@ export default function App() {
     };
 
     init();
+    // Cleanup client on unmount or when necessary
+    return () => {
+      destroyBKTClient();
+    };
   }, []);
 
   if (!client) {
