@@ -22,7 +22,7 @@ interface AsyncStorageInterface {
 }
 
 class AsyncKeyValueStore<T> implements BKTStorage<T> {
-  private asyncStorage: AsyncStorageInterface;
+  private asyncStorage: any;
 
   constructor(
     private key: string,
@@ -78,10 +78,7 @@ function createReactNativeStorageFactory():
 
     // Return factory that creates AsyncKeyValueStore with AsyncStorage
     return <T>(key: string): BKTStorage<T> => {
-      return new AsyncKeyValueStore<T>(
-        key,
-        AsyncStorage as AsyncStorageInterface
-      );
+      return new AsyncKeyValueStore<T>(key, AsyncStorage);
     };
   } catch (error) {
     console.warn('AsyncStorage not available:', error);

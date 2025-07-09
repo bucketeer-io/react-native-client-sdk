@@ -21,6 +21,27 @@ For documentation related to flags management in Bucketeer, refer to the [Bucket
 npm install @bucketeer/react-native-client-sdk
 ```
 
+### AsyncStorage Dependency
+
+This SDK uses `@react-native-async-storage/async-storage` for bootstrapping, which is a native dependency. If you don't have it installed, the evaluation will not be cached between app restarts.
+
+**For Expo projects:**
+Adding the Bucketeer React Native SDK from npm and re-running `pod install` should suffice.
+If it doesn't work, you may need to install `@react-native-async-storage/async-storage` as a dependency in your project.
+
+```sh
+npx expo install @react-native-async-storage/async-storage
+```
+**For bare React Native projects:**
+You'll need to explicitly add `@react-native-async-storage/async-storage` as a dependency to your project and re-run `pod install` for auto-linking to work. This is because auto-linking does not work with transitive dependencies.
+
+```sh
+npm install @react-native-async-storage/async-storage
+cd ios && pod install  # For iOS
+```
+
+For more details, see: https://react-native-async-storage.github.io/async-storage/docs/install/
+
 ## Usage
 
 Initialize the Bucketeer client and provide it to your app using the `BucketeerProvider`:

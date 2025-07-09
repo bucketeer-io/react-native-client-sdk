@@ -1593,6 +1593,27 @@ PODS:
     - React-logger
     - React-perflogger
     - React-utils (= 0.76.9)
+  - RNCAsyncStorage (1.23.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -1669,6 +1690,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1817,6 +1839,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1891,6 +1915,7 @@ SPEC CHECKSUMS:
   React-utils: 54df9ada708578c8ad40d92895d6fed03e0e8a9e
   ReactCodegen: 21a52ccddc6479448fc91903a437dd23ddc7366c
   ReactCommon: bfd3600989d79bc3acbe7704161b171a1480b9fd
+  RNCAsyncStorage: ac02697867ba18d2cfd761ebb144417fe65b210e
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 40f19fff64dce86773bf8b602c7070796c007970
 

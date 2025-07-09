@@ -3019,6 +3019,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:1.23.1":
+  version: 1.23.1
+  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
+  dependencies:
+    merge-options: ^3.0.4
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.60 <1.0
+  checksum: 7096546ed4a5faf1f6e0425e2e15713575f1a7493a04524da386ff35c3844b57b8fd20544fad4157b4a61e048b10235f2f06124f262da5b327edc74fbc31e02b
+  languageName: node
+  linkType: hard
+
 "@react-native-async-storage/async-storage@npm:^1.23.1":
   version: 1.24.0
   resolution: "@react-native-async-storage/async-storage@npm:1.24.0"
@@ -11572,6 +11583,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.0
     "@expo/metro-runtime": ~4.0.1
+    "@react-native-async-storage/async-storage": 1.23.1
     expo: ~52.0.46
     expo-status-bar: ~2.0.1
     react: 18.3.1
