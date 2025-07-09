@@ -3,7 +3,7 @@ import type { BKTConfig, RawBKTConfig } from 'bkt-js-client-sdk';
 import { SDK_VERSION } from './version';
 import { SOURCE_ID_REACT_NATIVE } from './SourceId';
 import { ReactNativeIdGenerator } from './IdGenerator';
-import { createReactNativeStorageFactory } from './ConditionalAsyncStorage';
+import { createReactNativeStorageFactory } from './AsyncStorage';
 
 export * from 'bkt-js-client-sdk';
 export * from 'bkt-react-client-sdk';
