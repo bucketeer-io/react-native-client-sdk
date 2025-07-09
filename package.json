@@ -34,7 +34,6 @@
   "scripts": {
     "example": "yarn workspace react-native-client-sdk-example",
     "test": "jest",
-    "test:e2e": "maestro test e2e --format=junit --output=report.xml --no-ansi",
     "build:e2e:ios": "yarn example ios --configuration Release --no-bundler ",
     "build:e2e:android": "yarn example android --variant release --no-bundler",
     "typecheck": "tsc",
@@ -148,7 +147,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "bkt-react-client-sdk": "0.0.11",
+    "bkt-react-client-sdk": "0.0.12",
     "react-native-uuid": "^2.0.3"
   }
 }

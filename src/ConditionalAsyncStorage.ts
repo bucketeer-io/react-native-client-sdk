@@ -13,66 +13,54 @@
  * https://github.com/react-native-community/cli/issues/1347
  *
  */
-// let ConditionalAsyncStorage: any;
-
 import type { BKTStorage } from 'bkt-js-client-sdk';
 
-export class InMemoryStorage<T> implements BKTStorage<T> {
-  private cache: Record<string, T | null> = {};
-  private asyncStorage: any;
+interface AsyncStorageInterface {
+  getItem(key: string): Promise<string | null>;
+  setItem(key: string, value: string): Promise<void>;
+  removeItem(key: string): Promise<void>;
+}
+
+class AsyncKeyValueStore<T> implements BKTStorage<T> {
+  private asyncStorage: AsyncStorageInterface;
 
   constructor(
     private key: string,
-    asyncStorage: any
+    asyncStorage: AsyncStorageInterface
   ) {
     this.asyncStorage = asyncStorage;
-
-    // Pre-load from async storage if available
-    this.loadFromAsyncStorage();
   }
 
-  set(value: T | null): void {
-    // Update in-memory cache immediately
-    this.cache[this.key] = value;
-
-    // Auto-sync to async storage (fire and forget)
-    this.syncToAsyncStorage();
-  }
-
-  get(): T | null {
-    return this.cache[this.key] ?? null;
-  }
-
-  clear(): void {
-    // Clear from in-memory cache immediately
-    delete this.cache[this.key];
-
-    // Auto-sync clear to async storage (fire and forget)
-    this.syncClearToAsyncStorage();
-  }
-
-  private async loadFromAsyncStorage(): Promise<void> {
+  async set(value: T | null): Promise<void> {
     try {
-      const value = await this.asyncStorage.getItem(this.key);
-      if (value !== null) {
-        this.cache[this.key] = JSON.parse(value);
+      if (value === null) {
+        await this.asyncStorage.removeItem(this.key);
+      } else {
+        await this.asyncStorage.setItem(this.key, JSON.stringify(value));
       }
-    } catch {
-      // Ignore errors - in-memory storage will work fine
+    } catch (error) {
+      throw new Error(`Failed to set value for key "${this.key}": ${error}`);
     }
   }
 
-  private syncToAsyncStorage(): void {
-    const value = this.cache[this.key];
-    this.asyncStorage.setItem(this.key, JSON.stringify(value)).catch(() => {
-      // Ignore errors - in-memory storage still works
-    });
+  async get(): Promise<T | null> {
+    try {
+      const item = await this.asyncStorage.getItem(this.key);
+      if (item === null) {
+        return null;
+      }
+      return JSON.parse(item) as T;
+    } catch (error) {
+      throw new Error(`Failed to get value for key "${this.key}": ${error}`);
+    }
   }
 
-  private syncClearToAsyncStorage(): void {
-    this.asyncStorage.removeItem(this.key).catch(() => {
-      // Ignore errors - in-memory storage still works
-    });
+  async clear(): Promise<void> {
+    try {
+      await this.asyncStorage.removeItem(this.key);
+    } catch (error) {
+      throw new Error(`Failed to clear value for key "${this.key}": ${error}`);
+    }
   }
 }
 
@@ -80,7 +68,7 @@ function createReactNativeStorageFactory():
   | (<T>(key: string) => BKTStorage<T>)
   | undefined {
   try {
-    // Try to require AsyncStorage directly instead of circular dependency
+    // Check if AsyncStorage is available
     const AsyncStorage =
       require('@react-native-async-storage/async-storage').default;
 
@@ -88,9 +76,12 @@ function createReactNativeStorageFactory():
       return undefined;
     }
 
-    // Return factory that creates InMemoryStorage with AsyncStorage sync
+    // Return factory that creates AsyncKeyValueStore with AsyncStorage
     return <T>(key: string): BKTStorage<T> => {
-      return new InMemoryStorage<T>(key, AsyncStorage);
+      return new AsyncKeyValueStore<T>(
+        key,
+        AsyncStorage as AsyncStorageInterface
+      );
     };
   } catch (error) {
     console.warn('AsyncStorage not available:', error);

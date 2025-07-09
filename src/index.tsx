@@ -3,6 +3,7 @@ import type { BKTConfig, RawBKTConfig } from 'bkt-js-client-sdk';
 import { SDK_VERSION } from './version';
 import { SOURCE_ID_REACT_NATIVE } from './SourceId';
 import { ReactNativeIdGenerator } from './IdGenerator';
+import { createReactNativeStorageFactory } from './ConditionalAsyncStorage';
 
 export * from 'bkt-js-client-sdk';
 export * from 'bkt-react-client-sdk';
@@ -15,5 +16,6 @@ export function defineBKTConfigForReactNative(config: RawBKTConfig): BKTConfig {
     wrapperSdkSourceId: SOURCE_ID_REACT_NATIVE,
     wrapperSdkVersion: SDK_VERSION,
     userAgent: `Bucketeer React Native SDK(${SDK_VERSION})`,
+    storageFactory: createReactNativeStorageFactory(),
   });
 }
