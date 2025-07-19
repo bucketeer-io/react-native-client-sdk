@@ -1,5 +1,5 @@
 {
-  "name": "bkt-react-native-client-sdk",
+  "name": "bkt-react-native-client-sdk-2",
   "version": "0.0.1",
   "description": "sdk",
   "source": "./src/index.tsx",
@@ -40,8 +40,7 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
-    "prepare": "bob build",
-    "release": "release-it"
+    "prepare": "bob build"
   },
   "keywords": [
     "react-native",
