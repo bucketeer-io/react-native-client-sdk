@@ -4398,9 +4398,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bkt-react-native-client-sdk@workspace:.":
+"bkt-react-native-client-sdk-2@workspace:.":
   version: 0.0.0-use.local
-  resolution: "bkt-react-native-client-sdk@workspace:."
+  resolution: "bkt-react-native-client-sdk-2@workspace:."
   dependencies:
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
