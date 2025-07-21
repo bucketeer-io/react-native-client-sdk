@@ -53,7 +53,6 @@ jobs:
 
       - name: Build package
         run: |
-          yarn prebuild
           yarn build
 
   build-web:

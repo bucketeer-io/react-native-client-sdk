@@ -24,7 +24,6 @@ jobs:
 
       - name: Build package
         run: |
-          yarn prebuild
           yarn build
 
       - name: Restore CocoaPods cache
@@ -104,7 +103,6 @@ jobs:
 
       - name: Build package
         run: |
-          yarn prebuild
           yarn build
 
       - name: Set up JDK 17

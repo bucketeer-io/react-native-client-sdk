@@ -1,6 +1,6 @@
 {
-  "name": "bkt-react-native-client-sdk-2",
-  "version": "0.0.2",
+  "name": "bkt-react-native-client-sdk",
+  "version": "0.0.1",
   "description": "sdk",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -41,7 +41,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prebuild": "node -p \"'export const SDK_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
-    "build": "bob build"
+    "build": "yarn prebuild; bob build"
   },
   "keywords": [
     "react-native",
