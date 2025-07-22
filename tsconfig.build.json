@@ -4,6 +4,7 @@
     "example", 
     "lib",
     "e2e",
+    "demo",
     "**/__tests__",
     "**/__mocks__",
     "**/__fixtures__",
