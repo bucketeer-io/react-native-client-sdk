@@ -63,7 +63,7 @@ jobs:
           key: ${{ steps.yarn-cache.outputs.cache-primary-key }}
 
       - name: Build SDK
-        run: yarn prepare
+        run: yarn build
 
       - name: Publish
         run: npm publish --access public
