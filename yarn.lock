@@ -4152,15 +4152,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bkt-react-client-sdk@npm:0.0.17":
-  version: 0.0.17
-  resolution: "bkt-react-client-sdk@npm:0.0.17"
+"bkt-react-client-sdk@npm:0.0.18":
+  version: 0.0.18
+  resolution: "bkt-react-client-sdk@npm:0.0.18"
   dependencies:
     bkt-js-client-sdk: 2.2.26
   peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: cc775bca5d80760ba418ef8361e15c70a9893fcee8679187804e5902d1b879bc0137b832639ce32d6ad85421c5fc4df66c717fbad24daf0187e2242fad107baf
+    react: ">=16.8.0 || ^19.0.0"
+    react-dom: ">=16.8.0 || ^19.0.0"
+  checksum: 6f663d3afb880789b1cb952b497fd3704d1ae8ba9518c42821f6bccc54b2c3d84d70c50a6cab61241f92c2be1e21d76c0217ca26afad5f493ee422a226ac7143
   languageName: node
   linkType: hard
 
@@ -4177,7 +4177,7 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": 18.3.1
-    bkt-react-client-sdk: 0.0.17
+    bkt-react-client-sdk: 0.0.18
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -4185,14 +4185,14 @@ __metadata:
     eslint-plugin-prettier: ^5.2.3
     jest: ^29.7.0
     prettier: ^3.0.3
-    react: 18.3.1
-    react-native: 0.76.9
+    react: ^18.0.0
+    react-native: ^0.76.9
     react-native-builder-bob: ^0.40.6
     react-native-uuid: ^2.0.3
     typescript: ^5.2.2
   peerDependencies:
     "@react-native-async-storage/async-storage": ^1.23.1
-    react: ">=16.8.0"
+    react: ">=16.8.0 || ^19.0.0"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -10619,7 +10619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.76.9":
+"react-native@npm:0.76.9, react-native@npm:^0.76.9":
   version: 0.76.9
   resolution: "react-native@npm:0.76.9"
   dependencies:
@@ -10680,7 +10680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.3.1":
+"react@npm:18.3.1, react@npm:^18.0.0":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:

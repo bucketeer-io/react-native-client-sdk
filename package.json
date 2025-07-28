@@ -1,6 +1,6 @@
 {
   "name": "bkt-react-native-client-sdk",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "sdk",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -62,7 +62,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "bkt-react-client-sdk": "0.0.17",
+    "bkt-react-client-sdk": "0.0.18",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
@@ -82,14 +82,14 @@
     "eslint-plugin-prettier": "^5.2.3",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
-    "react": "18.3.1",
-    "react-native": "0.76.9",
+    "react": "^18.0.0",
+    "react-native": "^0.76.9",
     "react-native-builder-bob": "^0.40.6",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "react": ">=16.8.0",
+    "react": ">=16.8.0 || ^19.0.0",
     "react-native": "*"
   },
   "workspaces": [
