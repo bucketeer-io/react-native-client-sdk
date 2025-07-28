@@ -1,6 +1,6 @@
 {
   "name": "bkt-react-native-client-sdk",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "sdk",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -62,7 +62,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "bkt-react-client-sdk": "0.0.16",
+    "bkt-react-client-sdk": "0.0.17",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
@@ -89,7 +89,6 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "@types/react": ">=16.8.0",
     "react": ">=16.8.0",
     "react-native": "*"
   },

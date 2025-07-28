@@ -4152,17 +4152,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bkt-react-client-sdk@npm:0.0.16":
-  version: 0.0.16
-  resolution: "bkt-react-client-sdk@npm:0.0.16"
+"bkt-react-client-sdk@npm:0.0.17":
+  version: 0.0.17
+  resolution: "bkt-react-client-sdk@npm:0.0.17"
   dependencies:
     bkt-js-client-sdk: 2.2.26
   peerDependencies:
-    "@types/react": ">=16.8.0"
-    "@types/react-dom": ">=16.8.0"
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 786abd17661ccf6c06cbcf0c91577938b0096add7f5240cbcc4f5945e35cfd88ed6726c3655d15d57b9c82ff9975ecaebc5c411650fa2dda23bb6da07a270add
+  checksum: cc775bca5d80760ba418ef8361e15c70a9893fcee8679187804e5902d1b879bc0137b832639ce32d6ad85421c5fc4df66c717fbad24daf0187e2242fad107baf
   languageName: node
   linkType: hard
 
@@ -4179,7 +4177,7 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": 18.3.1
-    bkt-react-client-sdk: 0.0.16
+    bkt-react-client-sdk: 0.0.17
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -4194,7 +4192,6 @@ __metadata:
     typescript: ^5.2.2
   peerDependencies:
     "@react-native-async-storage/async-storage": ^1.23.1
-    "@types/react": ">=16.8.0"
     react: ">=16.8.0"
     react-native: "*"
   languageName: unknown
