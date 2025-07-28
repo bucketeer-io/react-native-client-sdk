@@ -1633,40 +1633,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bucketeer/react-native-client-sdk@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@bucketeer/react-native-client-sdk@workspace:."
-  dependencies:
-    "@commitlint/config-conventional": ^19.6.0
-    "@eslint/compat": ^1.2.7
-    "@eslint/eslintrc": ^3.3.0
-    "@eslint/js": ^9.22.0
-    "@evilmartians/lefthook": ^1.5.0
-    "@react-native/eslint-config": ^0.78.0
-    "@release-it/conventional-changelog": ^9.0.2
-    "@types/jest": ^29.5.5
-    "@types/react": 18.3.1
-    bkt-react-client-sdk: 0.0.16
-    commitlint: ^19.6.1
-    del-cli: ^5.1.0
-    eslint: ^9.22.0
-    eslint-config-prettier: ^10.1.1
-    eslint-plugin-prettier: ^5.2.3
-    jest: ^29.7.0
-    prettier: ^3.0.3
-    react: 18.3.1
-    react-native: 0.76.9
-    react-native-builder-bob: ^0.40.6
-    react-native-uuid: ^2.0.3
-    typescript: ^5.2.2
-  peerDependencies:
-    "@react-native-async-storage/async-storage": ^1.23.1
-    "@types/react": ">=16.8.0"
-    react: ">=16.8.0"
-    react-native: "*"
-  languageName: unknown
-  linkType: soft
-
 "@commitlint/cli@npm:^19.8.1":
   version: 19.8.1
   resolution: "@commitlint/cli@npm:19.8.1"
@@ -4199,6 +4165,40 @@ __metadata:
   checksum: 786abd17661ccf6c06cbcf0c91577938b0096add7f5240cbcc4f5945e35cfd88ed6726c3655d15d57b9c82ff9975ecaebc5c411650fa2dda23bb6da07a270add
   languageName: node
   linkType: hard
+
+"bkt-react-native-client-sdk@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "bkt-react-native-client-sdk@workspace:."
+  dependencies:
+    "@commitlint/config-conventional": ^19.6.0
+    "@eslint/compat": ^1.2.7
+    "@eslint/eslintrc": ^3.3.0
+    "@eslint/js": ^9.22.0
+    "@evilmartians/lefthook": ^1.5.0
+    "@react-native/eslint-config": ^0.78.0
+    "@release-it/conventional-changelog": ^9.0.2
+    "@types/jest": ^29.5.5
+    "@types/react": 18.3.1
+    bkt-react-client-sdk: 0.0.16
+    commitlint: ^19.6.1
+    del-cli: ^5.1.0
+    eslint: ^9.22.0
+    eslint-config-prettier: ^10.1.1
+    eslint-plugin-prettier: ^5.2.3
+    jest: ^29.7.0
+    prettier: ^3.0.3
+    react: 18.3.1
+    react-native: 0.76.9
+    react-native-builder-bob: ^0.40.6
+    react-native-uuid: ^2.0.3
+    typescript: ^5.2.2
+  peerDependencies:
+    "@react-native-async-storage/async-storage": ^1.23.1
+    "@types/react": ">=16.8.0"
+    react: ">=16.8.0"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
 
 "bplist-creator@npm:0.0.7":
   version: 0.0.7

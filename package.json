@@ -1,6 +1,6 @@
 {
-  "name": "@bucketeer/react-native-client-sdk",
-  "version": "0.0.1",
+  "name": "bkt-react-native-client-sdk",
+  "version": "0.0.14",
   "description": "sdk",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
