@@ -86,3 +86,4 @@ android/generated
 nitrogen/
 example/.env
 report.xml
+src/version.ts
