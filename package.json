@@ -1,6 +1,6 @@
 {
   "name": "bkt-react-native-client-sdk",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "description": "sdk",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -62,7 +62,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "bkt-react-client-sdk": "0.0.18",
+    "bkt-react-client-sdk": "0.0.19",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
