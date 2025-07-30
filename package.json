@@ -41,7 +41,7 @@
     "typecheck": "yarn prebuild; tsc",
     "lint": "yarn prebuild; eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
-    "build": "bob build"
+    "build": "yarn prebuild; bob build"
   },
   "keywords": [
     "react-native",
