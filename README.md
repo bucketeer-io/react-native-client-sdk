@@ -125,6 +125,3 @@ For detailed API usage, see the [@bucketeer/react-client-sdk documentation](http
 ## License
 
 Apache 2.0
-
-0.0.16 React 18
-0.0.17 React 19
