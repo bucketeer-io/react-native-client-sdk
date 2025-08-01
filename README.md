@@ -21,6 +21,15 @@ For documentation related to flags management in Bucketeer, refer to the [Bucket
 npm install @bucketeer/react-native-client-sdk
 ```
 
+**React Version Support:**
+- ✅ **Supported:** 
+  - React 18.2.0 - 18.3.x
+  - React Native 0.76.0 - 0.78.x
+- ⚠️ **May work:** React 18.0.0 - 18.1.x (not officially supported)
+- ❌ **Not supported:** 
+  - React 19.0.0 and above
+  - React Native 0.79.0 and above as it uses React 19.0.0
+
 ### AsyncStorage Dependency
 
 This SDK uses `@react-native-async-storage/async-storage` for bootstrapping, which is a native dependency.
