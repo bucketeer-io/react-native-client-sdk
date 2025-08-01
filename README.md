@@ -23,7 +23,7 @@ npm install @bucketeer/react-native-client-sdk
 
 ### AsyncStorage Dependency
 
-This SDK uses `@react-native-async-storage/async-storage` for bootstrapping, which is a native dependency. If you don't have it installed, the evaluation will not be cached between app restarts.
+This SDK uses `@react-native-async-storage/async-storage` for bootstrapping, which is a native dependency.
 
 **For Expo projects:**
 Adding the Bucketeer React Native SDK from npm and re-running `pod install` should suffice.
