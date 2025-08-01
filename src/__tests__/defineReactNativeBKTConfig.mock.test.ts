@@ -1,4 +1,4 @@
-jest.mock('@bucketeer/js-client-sdk', () => ({
+jest.mock('@bucketeer/react-client-sdk', () => ({
   defineBKTConfig: jest.fn(),
 }));
 
@@ -7,7 +7,7 @@ import { SOURCE_ID_REACT_NATIVE } from '../SourceId';
 import { SDK_VERSION } from '../version';
 
 // Get the mocked function after imports
-const { defineBKTConfig } = jest.requireMock('@bucketeer/js-client-sdk');
+const { defineBKTConfig } = jest.requireMock('@bucketeer/react-client-sdk');
 const mockDefineBKTConfig = defineBKTConfig as jest.MockedFunction<
   typeof defineBKTConfig
 >;

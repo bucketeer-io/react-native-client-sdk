@@ -1,9 +1,9 @@
 /**
- * The Buckeeteer React-Native SDK uses
+ * The Bucketeer React-Native SDK uses
  * @react-native-async-storage/async-storage for bootstrapping. This is a native
  * dependency.
  *
- * If you are using expo, then adding the Buckeeteer React Native
+ * If you are using expo, then adding the Bucketeer React Native
  * SDK from npm and re-running pod install should suffice.
  *
  * If you are not using expo, you will need to explicitly add
