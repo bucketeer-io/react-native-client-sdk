@@ -22,7 +22,7 @@ interface AsyncStorageInterface {
 }
 
 class AsyncKeyValueStore<T> implements BKTStorage<T> {
-  private asyncStorage: any;
+  private asyncStorage: AsyncStorageInterface;
 
   constructor(
     private key: string,
