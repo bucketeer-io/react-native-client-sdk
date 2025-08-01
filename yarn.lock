@@ -1633,10 +1633,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bucketeer/js-client-sdk@npm:2.3.0":
+  version: 2.3.0
+  resolution: "@bucketeer/js-client-sdk@npm:2.3.0"
+  dependencies:
+    async-mutex: 0.5.0
+  checksum: 03fbdad6353a50387b0170c7115bb86cc47b70ae24be77bbdd7ea385fb31123a05a17184c581b55e37c56ad90ec256264885e354660c79596b308cd60e403e4f
+  languageName: node
+  linkType: hard
+
+"@bucketeer/react-client-sdk@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@bucketeer/react-client-sdk@npm:0.0.1"
+  dependencies:
+    "@bucketeer/js-client-sdk": 2.3.0
+  peerDependencies:
+    react: ">=18.0.0 || ^19.0.0"
+    react-dom: ">=18.0.0 || ^19.0.0"
+  checksum: 6920ae6f06ef708d6e3911551025392cd910244dc7a60d3330dfe7c19ce290ee2ba0cd484112781e656fcd7c84dc98c5df5200611fb0e6b66dc25ed11f229bad
+  languageName: node
+  linkType: hard
+
 "@bucketeer/react-native-client-sdk@workspace:.":
   version: 0.0.0-use.local
   resolution: "@bucketeer/react-native-client-sdk@workspace:."
   dependencies:
+    "@bucketeer/react-client-sdk": 0.0.1
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
     "@eslint/eslintrc": ^3.3.0
@@ -1646,7 +1668,6 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": ^18.3.1
-    bkt-react-client-sdk: 0.0.22
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -4183,27 +4204,6 @@ __metadata:
   version: 1.6.52
   resolution: "big-integer@npm:1.6.52"
   checksum: 6e86885787a20fed96521958ae9086960e4e4b5e74d04f3ef7513d4d0ad631a9f3bde2730fc8aaa4b00419fc865f6ec573e5320234531ef37505da7da192c40b
-  languageName: node
-  linkType: hard
-
-"bkt-js-client-sdk@npm:2.2.27":
-  version: 2.2.27
-  resolution: "bkt-js-client-sdk@npm:2.2.27"
-  dependencies:
-    async-mutex: 0.5.0
-  checksum: 45d8dae079d9a2aa291396d95f658616d84031c3f7e648583cf982aad6e98f4e10945b8979739533b93f01cc163a495d3ea7b6f3ee08c9d58d5424b2a4355990
-  languageName: node
-  linkType: hard
-
-"bkt-react-client-sdk@npm:0.0.22":
-  version: 0.0.22
-  resolution: "bkt-react-client-sdk@npm:0.0.22"
-  dependencies:
-    bkt-js-client-sdk: 2.2.27
-  peerDependencies:
-    react: ">=16.8.0 || ^19.0.0"
-    react-dom: ">=16.8.0 || ^19.0.0"
-  checksum: 01531d0a4609308dbfe52f9d8173b48a4e9472b5711328044dd53bbefb47d135f4d321ae5443affd7efb09c92755143b680565f09a1afdd40aa3c29c9c501c3c
   languageName: node
   linkType: hard
 
