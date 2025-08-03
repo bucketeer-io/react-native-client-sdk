@@ -107,7 +107,7 @@ function createReactNativeStorageFactory():
       return new BKTAsyncKeyValueStore<T>(key, AsyncStorage);
     };
   } catch (error) {
-    console.warn('AsyncStorage not available:');
+    console.warn('AsyncStorage not available');
     return undefined;
   }
 }
