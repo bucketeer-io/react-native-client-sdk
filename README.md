@@ -128,8 +128,12 @@ export default function App() {
 
 ## API Reference
 
-This SDK re-exports all APIs from the React SDK.  
-For detailed API usage, see the [@bucketeer/react-client-sdk documentation](https://github.com/bucketeer-io/react-client-sdk/blob/main/README.md#usage).
+This SDK re-exports all APIs from the Bucketeer React SDK and JS SDK
+For detailed API usage, see the 
+
+[@bucketeer/js-sdk documentation](https://docs.bucketeer.io/sdk/client-side/javascript).
+
+[@bucketeer/react-client-sdk documentation](https://github.com/bucketeer-io/react-client-sdk/blob/main/README.md#usage).
 
 ## License
 

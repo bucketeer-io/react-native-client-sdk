@@ -21,7 +21,18 @@ interface AsyncStorageInterface {
   removeItem(key: string): Promise<void>;
 }
 
-class AsyncKeyValueStore<T> implements BKTStorage<T> {
+class BKTAsyncStorageError extends Error {
+  constructor(
+    message: string,
+    public key: string,
+    public operation: string
+  ) {
+    super(message);
+    this.name = 'BKTStorageError';
+  }
+}
+
+class BKTAsyncKeyValueStore<T> implements BKTStorage<T> {
   private asyncStorage: AsyncStorageInterface;
 
   constructor(
@@ -39,7 +50,12 @@ class AsyncKeyValueStore<T> implements BKTStorage<T> {
         await this.asyncStorage.setItem(this.key, JSON.stringify(value));
       }
     } catch (error) {
-      throw new Error(`Failed to set value for key "${this.key}": ${error}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BKTAsyncStorageError(
+        `Failed to set value for key "${this.key}": ${message}`,
+        this.key,
+        'set'
+      );
     }
   }
 
@@ -51,7 +67,12 @@ class AsyncKeyValueStore<T> implements BKTStorage<T> {
       }
       return JSON.parse(item) as T;
     } catch (error) {
-      throw new Error(`Failed to get value for key "${this.key}": ${error}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BKTAsyncStorageError(
+        `Failed to get value for key "${this.key}": ${message}`,
+        this.key,
+        'get'
+      );
     }
   }
 
@@ -59,7 +80,12 @@ class AsyncKeyValueStore<T> implements BKTStorage<T> {
     try {
       await this.asyncStorage.removeItem(this.key);
     } catch (error) {
-      throw new Error(`Failed to clear value for key "${this.key}": ${error}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new BKTAsyncStorageError(
+        `Failed to clear value for key "${this.key}": ${message}`,
+        this.key,
+        'clear'
+      );
     }
   }
 }
@@ -78,12 +104,16 @@ function createReactNativeStorageFactory():
 
     // Return factory that creates AsyncKeyValueStore with AsyncStorage
     return <T>(key: string): BKTStorage<T> => {
-      return new AsyncKeyValueStore<T>(key, AsyncStorage);
+      return new BKTAsyncKeyValueStore<T>(key, AsyncStorage);
     };
   } catch (error) {
-    console.warn('AsyncStorage not available:', error);
+    console.warn('AsyncStorage not available:');
     return undefined;
   }
 }
 
-export { createReactNativeStorageFactory };
+export {
+  createReactNativeStorageFactory,
+  BKTAsyncStorageError,
+  BKTAsyncKeyValueStore,
+};

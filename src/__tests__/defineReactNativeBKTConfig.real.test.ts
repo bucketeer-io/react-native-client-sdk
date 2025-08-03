@@ -18,7 +18,9 @@ describe('defineBKTConfigForReactNative - Real implementation', () => {
     expect(config.idGenerator).toBeInstanceOf(ReactNativeIdGenerator);
     expect(config.wrapperSdkSourceId).toBe(SOURCE_ID_REACT_NATIVE);
     expect(config.wrapperSdkVersion).toBe(SDK_VERSION);
-    expect(config.userAgent).toBe(`Bucketeer React Native SDK(${SDK_VERSION})`);
+    expect(config.userAgent).toContain(
+      `Bucketeer React Native SDK(${SDK_VERSION})`
+    );
     const { sourceId, sdkVersion } = config as unknown as {
       // internal fields
       sdkVersion: string;

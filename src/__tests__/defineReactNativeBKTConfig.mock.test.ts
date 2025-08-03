@@ -12,6 +12,13 @@ const mockDefineBKTConfig = defineBKTConfig as jest.MockedFunction<
   typeof defineBKTConfig
 >;
 
+jest.mock('../Platform', () => ({
+  getCurrentPlatform: jest.fn(() => ({
+    os: 'iOS',
+    version: '14.0',
+  })),
+}));
+
 describe('defineBKTConfigForReactNative - mock defineBKTConfig', () => {
   const baseConfig = {
     apiKey: 'test-key',
@@ -37,7 +44,7 @@ describe('defineBKTConfigForReactNative - mock defineBKTConfig', () => {
         idGenerator: expect.any(Object),
         wrapperSdkSourceId: SOURCE_ID_REACT_NATIVE,
         wrapperSdkVersion: SDK_VERSION,
-        userAgent: `Bucketeer React Native SDK(${SDK_VERSION})`,
+        userAgent: `Bucketeer React Native SDK(${SDK_VERSION}) iOS/14.0`,
       })
     );
   });
