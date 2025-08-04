@@ -1,5 +1,22 @@
 import { BKTAsyncStorageError, BKTAsyncKeyValueStore } from '../AsyncStorage';
 
+/**
+ * UNIT TESTS for BKTAsyncKeyValueStore and BKTAsyncStorageError
+ *
+ * Purpose: Test the business logic and behavior of storage classes in isolation
+ * using custom mocks to simulate various scenarios.
+ *
+ * These tests verify:
+ * 1. Data storage, retrieval, and serialization logic
+ * 2. Error handling for various failure scenarios
+ * 3. Support for different data types (string, number, object, array)
+ * 4. Edge cases (null values, invalid JSON, storage failures)
+ *
+ * NOTE: This is NOT duplicate of createReactNativeStorageFactory.test.ts
+ * - This file = Unit tests (business logic with custom mock storage)
+ * - createReactNativeStorageFactory.test.ts = Integration tests (React Native AsyncStorage)
+ */
+
 // Create a mock implementation of AsyncStorageInterface
 class MockAsyncStorage {
   private storage = new Map<string, string>();

@@ -95,8 +95,8 @@ function createReactNativeStorageFactory():
   | undefined {
   try {
     // Check if AsyncStorage is available
-    const AsyncStorage =
-      require('@react-native-async-storage/async-storage').default;
+    const AsyncStorageModule = require('@react-native-async-storage/async-storage');
+    const AsyncStorage = AsyncStorageModule.default;
 
     if (!AsyncStorage) {
       return undefined;
