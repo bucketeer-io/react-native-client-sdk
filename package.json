@@ -1,7 +1,7 @@
 {
   "name": "@bucketeer/react-native-client-sdk",
   "version": "0.0.1",
-  "description": "sdk",
+  "description": "Bucketeer React Native SDK for feature flag management",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
