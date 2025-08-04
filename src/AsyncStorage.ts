@@ -107,7 +107,13 @@ function createReactNativeStorageFactory():
       return new BKTAsyncKeyValueStore<T>(key, AsyncStorage);
     };
   } catch (error) {
-    console.warn('AsyncStorage not available');
+    console.warn(
+      'AsyncStorage is not available. ' +
+        'This likely means that @react-native-async-storage/async-storage is not installed or not properly linked. ' +
+        'If you are using Expo, try re-installing the Bucketeer React Native SDK and re-running "pod install". ' +
+        'If you are not using Expo, ensure that @react-native-async-storage/async-storage is added as a dependency and run "pod install" for auto-linking. ' +
+        'See https://github.com/react-native-async-storage/async-storage and the SDK documentation for more information.'
+    );
     return undefined;
   }
 }
