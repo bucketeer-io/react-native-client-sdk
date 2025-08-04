@@ -2,19 +2,19 @@ import { createReactNativeStorageFactory } from '../AsyncStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
- * INTEGRATION TESTS for createReactNativeStorageFactory
+ * FACTORY AND MOCKED ASYNCSTORAGE TESTS for createReactNativeStorageFactory
  *
  * Purpose: Test the factory function and verify that the created storage instances
- * properly integrate with React Native's AsyncStorage.
+ * properly call the mocked React Native AsyncStorage methods.
  *
  * These tests verify:
  * 1. Factory function creation and availability
- * 2. Integration between BKTAsyncKeyValueStore and AsyncStorage
- * 3. Correct AsyncStorage method calls (setItem, getItem, removeItem)
+ * 2. Correct AsyncStorage method calls (setItem, getItem, removeItem)
+ * 3. Proper parameter passing to AsyncStorage methods
  *
  * NOTE: This is NOT duplicate of AsyncStorage.test.ts
- * - AsyncStorage.test.ts = Unit tests (business logic with mock storage)
- * - This file = Integration tests (React Native AsyncStorage integration)
+ * - AsyncStorage.test.ts = Unit tests (business logic with custom mock storage)
+ * - This file = Factory + AsyncStorage mock interaction tests
  * // https://react-native-async-storage.github.io/async-storage/docs/advanced/jest
  */
 
@@ -40,7 +40,7 @@ describe('createReactNativeStorageFactory', () => {
   });
 });
 
-describe('BKTAsyncKeyValueStore should use AsyncStorage correctly', () => {
+describe('BKTAsyncKeyValueStore from createReactNativeStorageFactory should use AsyncStorage correctly', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
