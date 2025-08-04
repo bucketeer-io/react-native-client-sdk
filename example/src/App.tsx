@@ -15,6 +15,7 @@ import {
   destroyBKTClient,
   getBKTClient,
   defineBKTUser,
+  BucketeerContext,
 } from '@bucketeer/react-native-client-sdk';
 import StringVariationScreen from './StringVariationScreen';
 import BooleanVariationScreen from './BooleanVariationScreen';
@@ -45,6 +46,16 @@ function AppContent() {
   const [currentScreen, setCurrentScreen] = React.useState<
     'demo' | 'string' | 'boolean' | 'number' | 'object'
   >('demo');
+  // There are two ways to use the Bucketeer client:
+  // 1. First we get the Bucketeer client from context
+  // This is the recommended way to access the client in your components.
+  // Make sure to wrap your app/component with BucketeerProvider.
+  const { client } = React.useContext(BucketeerContext);
+  // 2. Or we can use the getBKTClient() function to get the client directly
+  // This is useful if you need to access the client outside of a React component.
+  // Make sure to initialize the client before calling this function.
+  // const client = getBKTClient();
+  // Full BKTClient API reference: https://docs.bucketeer.io/sdk/client-side/javascript
 
   if (currentScreen === 'string') {
     return (
@@ -105,11 +116,25 @@ function AppContent() {
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       <FeatureFlagDemo />
-
+      <TouchableOpacity
+        testID="track-event-button"
+        style={styles.navButton}
+        onPress={async () => {
+          if (client) {
+            // Example of tracking an event
+            // You can replace 'demo_event' and 1 with your actual event name and value
+            client.track('demo_event', 1);
+            console.log('Event tracked: demo_event');
+          } else {
+            console.warn('Bucketeer client is not initialized');
+          }
+        }}
+      >
+        <Text style={styles.navButtonText}>Track Event</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         testID="open-string-screen-button"
         style={styles.navButton}
