@@ -1,9 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  BKTAsyncStorageError,
-  BKTAsyncKeyValueStore,
-  createReactNativeStorageFactory,
-} from '../AsyncStorage';
+import { BKTAsyncStorageError, BKTAsyncKeyValueStore } from '../AsyncStorage';
+import { createReactNativeStorageFactory } from '../AsyncStorageFactory';
 
 /**
  * UNIT TESTS for BKTAsyncKeyValueStore and BKTAsyncStorageError
