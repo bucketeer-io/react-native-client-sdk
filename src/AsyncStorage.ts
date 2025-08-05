@@ -28,7 +28,7 @@ class BKTAsyncStorageError extends Error {
     public operation: string
   ) {
     super(message);
-    this.name = 'BKTStorageError';
+    this.name = 'BKTAsyncStorageError';
   }
 }
 

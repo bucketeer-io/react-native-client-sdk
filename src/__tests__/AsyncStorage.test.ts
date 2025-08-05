@@ -93,7 +93,7 @@ describe('BKTAsyncStorageError', () => {
     expect(error.message).toBe('Test message');
     expect(error.key).toBe('testKey');
     expect(error.operation).toBe('set');
-    expect(error.name).toBe('BKTStorageError');
+    expect(error.name).toBe('BKTAsyncStorageError');
   });
 
   it('should extend Error correctly', () => {
