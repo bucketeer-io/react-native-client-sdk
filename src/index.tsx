@@ -24,10 +24,10 @@ export function defineBKTConfigForReactNative(config: RawBKTConfig): BKTConfig {
       storageFactory,
     };
   } else {
-    // Unset storageFactory if AsyncStorage is not available
-    // This will cause the SDK to use an in-memory storage implementation (refs: JS-SDK)
+    // Do not set storageFactory when AsyncStorage is not available
+    // This allows the JS-SDK to fall back to its default in-memory storage implementation
     console.warn(
-      'No storage factory available. Bucketeer React Native SDK will not have persistent storage.'
+      'AsyncStorage is not available. Bucketeer React Native SDK will use in-memory storage without persistence.'
     );
   }
   const result = defineBKTConfig(inputConfig);
