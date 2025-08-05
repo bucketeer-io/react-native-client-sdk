@@ -1,5 +1,9 @@
 appId: clientsdk.example
 
+# We will not test any re-exported JS functions from the React SDK.
+# ie: track_event, update_user_attributes, etc.
+# We will only test the React hook based features.
+
 ---
 # Test String Variation Screen
 - launchApp
