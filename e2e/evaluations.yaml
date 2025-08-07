@@ -1,0 +1,140 @@
+appId: clientsdk.example
+
+# We will not test any re-exported JS functions from the React SDK.
+# ie: track_event, update_user_attributes, etc.
+# We will only test the React hook based features.
+
+---
+# Test String Variation Screen
+- launchApp
+- tapOn:
+    id: "open-string-screen-button"
+- assertVisible: "SDK Ready: ✅"
+- assertVisible: "String Variation"
+- assertVisible:
+    id: "string-flag-value"
+- assertVisible: "Value: value-1"
+- assertVisible:
+    id: "string-details-feature-id"
+- assertVisible: "Feature ID: feature-js-e2e-string"
+- assertVisible:
+    id: "string-details-feature-version"
+- assertVisible: "Feature Version: 5"
+- assertVisible:
+    id: "string-details-user-id"
+- assertVisible: "User ID: bucketeer-js-user-id-1"
+- assertVisible:
+    id: "string-details-variation-id"
+- assertVisible: "Variation ID: 87e0a1ef-a0cb-49da-8460-289948f117ba"
+- assertVisible:
+    id: "string-details-variation-name"
+- assertVisible: "Variation Name: variation 1"
+- assertVisible:
+    id: "string-details-variation-value"
+- assertVisible: "Variation Value: value-1"
+- assertVisible:
+    id: "string-details-variation-reason"
+- assertVisible: "Reason: DEFAULT"
+- tapOn:
+    id: "back-to-demo-button"
+
+# Test Boolean Variation Screen
+- tapOn:
+    id: "open-boolean-screen-button"
+- assertVisible: "SDK Ready: ✅"
+- assertVisible: "Boolean Variation"
+- assertVisible:
+    id: "boolean-flag-value"
+- assertVisible: "Value: true"
+- assertVisible:
+    id: "feature-enabled"
+- assertVisible:
+    id: "boolean-details-feature-id"
+- assertVisible: "Feature ID: feature-js-e2e-boolean"
+- assertVisible:
+    id: "boolean-details-feature-version"
+- assertVisible: "Feature Version: 3"
+- assertVisible:
+    id: "boolean-details-user-id"
+- assertVisible: "User ID: bucketeer-js-user-id-1"
+- assertVisible:
+    id: "boolean-details-variation-id"
+- assertVisible: "Variation ID: 4fab39c8-bf62-4a78-8a10-1b8bc3dd3806"
+- assertVisible:
+    id: "boolean-details-variation-name"
+- assertVisible: "Variation Name: variation true"
+- assertVisible:
+    id: "boolean-details-variation-value"
+- assertVisible: "Variation Value: true"
+- assertVisible:
+    id: "boolean-details-variation-reason"
+- assertVisible: "Reason: DEFAULT"
+- tapOn:
+    id: "back-to-demo-button"
+
+# Test Number Variation Screen
+- tapOn:
+    id: "open-number-screen-button"
+- assertVisible: "SDK Ready: ✅"
+- assertVisible: "Number Variation"
+- assertVisible:
+    id: "number-flag-value"
+- assertVisible: "Value: 10"
+- assertVisible:
+    id: "number-details-feature-id"
+- assertVisible: "Feature ID: feature-js-e2e-int"
+- assertVisible:
+    id: "number-details-feature-version"
+- assertVisible: "Feature Version: 3"
+- assertVisible:
+    id: "number-details-user-id"
+- assertVisible: "User ID: bucketeer-js-user-id-1"
+- assertVisible:
+    id: "number-details-variation-id"
+- assertVisible: "Variation ID: 6079c503-c281-4561-b870-c2c59a75e6a6"
+- assertVisible:
+    id: "number-details-variation-name"
+- assertVisible: "Variation Name: variation 10"
+- assertVisible:
+    id: "number-details-variation-value"
+- assertVisible: "Variation Value: 10"
+- assertVisible:
+    id: "number-details-variation-reason"
+- assertVisible: "Reason: DEFAULT"
+- tapOn:
+    id: "back-to-demo-button"
+
+# Test Object Variation Screen
+- tapOn:
+    id: "open-object-screen-button"
+- assertVisible: "SDK Ready: ✅"
+- assertVisible: "Object Variation"
+- assertVisible:
+    id: "object-flag-value"
+- assertVisible: 'Value: {"key":"value-1"}'
+- assertVisible:
+    id: "key-value"
+- assertVisible: "Key: value-1"
+- assertVisible:
+    id: "object-details-feature-id"
+- assertVisible: "Feature ID: feature-js-e2e-json"
+- assertVisible:
+    id: "object-details-feature-version"
+- assertVisible: "Feature Version: 3"
+- assertVisible:
+    id: "object-details-user-id"
+- assertVisible: "User ID: bucketeer-js-user-id-1"
+- assertVisible:
+    id: "object-details-variation-id"
+- assertVisible: "Variation ID: 8b53a27b-2658-4f8c-925e-fb277808ed30"
+- assertVisible:
+    id: "object-details-variation-name"
+- assertVisible: "Variation Name: variation 1"
+- assertVisible:
+    id: "object-details-variation-value"
+- assertVisible: 'Variation Value: {"key":"value-1"}'
+- assertVisible:
+    id: "object-details-variation-reason"
+- assertVisible: "Reason: DEFAULT"
+- tapOn:
+    id: "back-to-demo-button"

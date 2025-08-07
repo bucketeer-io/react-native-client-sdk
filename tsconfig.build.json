@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "example", 
+    "lib",
+    "e2e",
+    "**/__tests__",
+    "**/__mocks__",
+    "**/__fixtures__",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
+}

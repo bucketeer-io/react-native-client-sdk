@@ -1,0 +1,3 @@
+const SOURCE_ID_REACT_NATIVE = 10;
+
+export { SOURCE_ID_REACT_NATIVE };
