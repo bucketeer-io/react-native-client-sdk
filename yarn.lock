@@ -1633,24 +1633,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bucketeer/js-client-sdk@npm:2.3.0":
-  version: 2.3.0
-  resolution: "@bucketeer/js-client-sdk@npm:2.3.0"
+"@bucketeer/js-client-sdk@npm:2.3.1":
+  version: 2.3.1
+  resolution: "@bucketeer/js-client-sdk@npm:2.3.1"
   dependencies:
     async-mutex: 0.5.0
-  checksum: 03fbdad6353a50387b0170c7115bb86cc47b70ae24be77bbdd7ea385fb31123a05a17184c581b55e37c56ad90ec256264885e354660c79596b308cd60e403e4f
+  checksum: 1ddb8fb795d65d84ddae80e7eb8714b93e83746dd12d9a8c131bd10ddbe8491d8193f4b2fb0f3634cdaa92557be32b197e0a68d95e1adb826dc04ef200b16ef7
   languageName: node
   linkType: hard
 
-"@bucketeer/react-client-sdk@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@bucketeer/react-client-sdk@npm:0.0.1"
+"@bucketeer/react-client-sdk@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@bucketeer/react-client-sdk@npm:0.0.2"
   dependencies:
-    "@bucketeer/js-client-sdk": 2.3.0
+    "@bucketeer/js-client-sdk": 2.3.1
   peerDependencies:
     react: ">=18.0.0 || ^19.0.0"
     react-dom: ">=18.0.0 || ^19.0.0"
-  checksum: 6920ae6f06ef708d6e3911551025392cd910244dc7a60d3330dfe7c19ce290ee2ba0cd484112781e656fcd7c84dc98c5df5200611fb0e6b66dc25ed11f229bad
+  checksum: 7dfeb1d180db3c9131811f873cc001f1180c1458d256ed6888a73a0cd973bc18896d532b56a2ad61b3798026527c7053b0157aa9878b00e5cceff86429c4ed4d
   languageName: node
   linkType: hard
 
@@ -1658,7 +1658,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bucketeer/react-native-client-sdk@workspace:."
   dependencies:
-    "@bucketeer/react-client-sdk": 0.0.1
+    "@bucketeer/react-client-sdk": 0.0.2
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
     "@eslint/eslintrc": ^3.3.0
