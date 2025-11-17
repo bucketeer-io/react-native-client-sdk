@@ -1,12 +1,12 @@
-import { defineBKTConfig } from '@bucketeer/react-client-sdk';
-import type { BKTConfig, RawBKTConfig } from '@bucketeer/react-client-sdk';
+import { defineBKTConfig } from 'bkt-react-client-sdk';
+import type { BKTConfig, RawBKTConfig } from 'bkt-react-client-sdk';
 import { SDK_VERSION } from './version';
 import { SOURCE_ID_REACT_NATIVE } from './SourceId';
 import { ReactNativeIdGenerator } from './IdGenerator';
 import { createReactNativeStorageFactory } from './AsyncStorageFactory';
 import { getCurrentPlatform } from './Platform';
 
-export * from '@bucketeer/react-client-sdk';
+export * from 'bkt-react-client-sdk';
 
 export function defineBKTConfigForReactNative(config: RawBKTConfig): BKTConfig {
   const platform = getCurrentPlatform();

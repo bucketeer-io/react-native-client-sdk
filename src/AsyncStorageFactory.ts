@@ -1,4 +1,4 @@
-import type { BKTStorage } from '@bucketeer/react-client-sdk';
+import type { BKTStorage } from 'bkt-react-client-sdk';
 import { BKTAsyncKeyValueStore } from './AsyncStorage';
 
 function createReactNativeStorageFactory():

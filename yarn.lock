@@ -1642,23 +1642,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bucketeer/react-client-sdk@npm:0.0.2":
-  version: 0.0.2
-  resolution: "@bucketeer/react-client-sdk@npm:0.0.2"
-  dependencies:
-    "@bucketeer/js-client-sdk": 2.3.1
-  peerDependencies:
-    react: ">=18.0.0 || ^19.0.0"
-    react-dom: ">=18.0.0 || ^19.0.0"
-  checksum: 7dfeb1d180db3c9131811f873cc001f1180c1458d256ed6888a73a0cd973bc18896d532b56a2ad61b3798026527c7053b0157aa9878b00e5cceff86429c4ed4d
-  languageName: node
-  linkType: hard
-
 "@bucketeer/react-native-client-sdk@workspace:.":
   version: 0.0.0-use.local
   resolution: "@bucketeer/react-native-client-sdk@workspace:."
   dependencies:
-    "@bucketeer/react-client-sdk": 0.0.2
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
     "@eslint/eslintrc": ^3.3.0
@@ -1669,6 +1656,7 @@ __metadata:
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
     "@types/react": ^18.3.1
+    bkt-react-client-sdk: 0.0.24
     commitlint: ^19.6.1
     del-cli: ^5.1.0
     eslint: ^9.22.0
@@ -4216,6 +4204,18 @@ __metadata:
   version: 1.6.52
   resolution: "big-integer@npm:1.6.52"
   checksum: 6e86885787a20fed96521958ae9086960e4e4b5e74d04f3ef7513d4d0ad631a9f3bde2730fc8aaa4b00419fc865f6ec573e5320234531ef37505da7da192c40b
+  languageName: node
+  linkType: hard
+
+"bkt-react-client-sdk@npm:0.0.24":
+  version: 0.0.24
+  resolution: "bkt-react-client-sdk@npm:0.0.24"
+  dependencies:
+    "@bucketeer/js-client-sdk": 2.3.1
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: ad2cc494f6fdf6f0efd9563e20fe7693f8c3a708df52f3939363467f956a775ff33cffd4c2c6885a1621486197abfd63bf7b30d6c396ec76da4a717ca6799cc0
   languageName: node
   linkType: hard
 

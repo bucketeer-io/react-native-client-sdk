@@ -62,7 +62,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@bucketeer/react-client-sdk": "0.0.2",
+    "bkt-react-client-sdk": "0.0.24",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
