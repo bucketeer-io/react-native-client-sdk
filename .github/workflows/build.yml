@@ -67,4 +67,5 @@ jobs:
       - name: Build example for Web
         run: |
           yarn prebuild
-          yarn example expo export --platform web
+          yarn demo/expo_react_18 expo export --platform web
+          yarn demo/expo_react_19 expo export --platform web
