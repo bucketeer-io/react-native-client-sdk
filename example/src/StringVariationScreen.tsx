@@ -1,16 +1,15 @@
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import {
-  BucketeerContext,
+  useBucketeerClient,
   useStringVariation,
   useStringVariationDetails,
 } from '@bucketeer/react-native-client-sdk';
 import { FEATURE_ID_STRING } from '../../e2e/constants';
 import { DetailRow } from './DetailRow';
 import { styles } from './styles';
-import { useContext } from 'react';
 
 export default function StringVariationScreen() {
-  const { client } = useContext(BucketeerContext);
+  const client = useBucketeerClient();
 
   const stringValue = useStringVariation(FEATURE_ID_STRING, 'default-string');
   const stringDetails = useStringVariationDetails(FEATURE_ID_STRING, 'default');

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   BucketeerProvider,
   defineBKTConfigForReactNative,
@@ -15,7 +9,7 @@ import {
   destroyBKTClient,
   getBKTClient,
   defineBKTUser,
-  BucketeerContext,
+  useBucketeerClient,
 } from '@bucketeer/react-native-client-sdk';
 import StringVariationScreen from './StringVariationScreen';
 import BooleanVariationScreen from './BooleanVariationScreen';
@@ -50,7 +44,7 @@ function AppContent() {
   // 1. First we get the Bucketeer client from context
   // This is the recommended way to access the client in your components.
   // Make sure to wrap your app/component with BucketeerProvider.
-  const { client } = React.useContext(BucketeerContext);
+  const client = useBucketeerClient();
   // 2. Or we can use the getBKTClient() function to get the client directly
   // This is useful if you need to access the client outside of a React component.
   // Make sure to initialize the client before calling this function.
@@ -225,24 +219,28 @@ export default function App() {
   }, []);
   if (!client) {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Initializing Bucketeer Client...</Text>
-          <Text style={styles.desc}>
-            Please wait while the client is being initialized.
-          </Text>
-        </View>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Initializing Bucketeer Client...</Text>
+        <Text style={styles.desc}>
+          Please wait while the client is being initialized.
+        </Text>
+      </View>
     );
   } else {
     return (
-      <SafeAreaView style={styles.safeArea}>
-        <BucketeerProvider client={client}>
-          <AppContent />
-        </BucketeerProvider>
-      </SafeAreaView>
+      <BucketeerProvider client={client}>
+        <AppContent />
+      </BucketeerProvider>
     );
   }
+}
+
+export function DumpView() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Dump View</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

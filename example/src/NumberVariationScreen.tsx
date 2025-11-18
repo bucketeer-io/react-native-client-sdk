@@ -1,16 +1,15 @@
 import { View, Text, ScrollView } from 'react-native';
 import {
-  BucketeerContext,
+  useBucketeerClient,
   useNumberVariation,
   useNumberVariationDetails,
 } from '@bucketeer/react-native-client-sdk';
 import { FEATURE_ID_INT } from '../../e2e/constants';
 import { DetailRow } from './DetailRow';
 import { styles } from './styles';
-import { useContext } from 'react';
 
 export default function NumberVariationScreen() {
-  const { client } = useContext(BucketeerContext);
+  const client = useBucketeerClient();
 
   const numberValue = useNumberVariation(FEATURE_ID_INT, 0);
   const numberDetails = useNumberVariationDetails(FEATURE_ID_INT, 0);
