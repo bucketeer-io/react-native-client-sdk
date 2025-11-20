@@ -6,6 +6,6 @@ module.exports = {
     '<rootDir>/lib/',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-native-community|@react-navigation|bkt-react-client-sdk)/)',
+    'node_modules/(?!(react-native|@react-native|@react-native-community|@react-navigation|@bucketeer/react-client-sdk)/)',
   ],
 };

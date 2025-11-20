@@ -62,10 +62,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "bkt-react-client-sdk": "0.0.26",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
+    "@bucketeer/js-client-sdk": "^2.4.0",
+    "@bucketeer/react-client-sdk": "^0.1.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.0",
@@ -89,8 +90,9 @@
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
+    "@bucketeer/react-client-sdk": ">=0.1.0 < 1.0.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "react": ">=18.2.0 || ^19.0.0",
+    "react": ">=18.2.0 < 20.0.0",
     "react-native": "^0.76.0"
   },
   "workspaces": [
