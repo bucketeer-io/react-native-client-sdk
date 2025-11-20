@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   BucketeerProvider,
   defineBKTConfigForReactNative,
@@ -222,28 +223,24 @@ export default function App() {
   }, []);
   if (!client) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Initializing Bucketeer Client...</Text>
-        <Text style={styles.desc}>
-          Please wait while the client is being initialized.
-        </Text>
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Initializing Bucketeer Client...</Text>
+          <Text style={styles.desc}>
+            Please wait while the client is being initialized.
+          </Text>
+        </View>
+      </SafeAreaView>
     );
   } else {
     return (
-      <BucketeerProvider client={client}>
-        <AppContent />
-      </BucketeerProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <BucketeerProvider client={client}>
+          <AppContent />
+        </BucketeerProvider>
+      </SafeAreaView>
     );
   }
-}
-
-export function DumpView() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dump View</Text>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
