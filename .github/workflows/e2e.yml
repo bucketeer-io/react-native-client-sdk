@@ -31,16 +31,16 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            example/ios/Pods
-            example/ios/Podfile.lock
-          key: ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
+            demo/expo_react_18/ios/Pods
+            demo/expo_react_18/ios/Podfile.lock
+          key: ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_18/ios/Podfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-pods-${{ hashFiles('example/ios/Podfile.lock') }}
+            ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_18/ios/Podfile.lock') }}
             ${{ runner.os }}-pods-
 
       - name: Install CocoaPods dependencies
         run: |
-          cd example/ios
+          cd demo/expo_react_18/ios
           pod install
           cd ../..
           
@@ -51,11 +51,11 @@ jobs:
 
       - name: Inject environment variables
         run: |
-          rm -f example/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> example/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> example/.env
-          echo "CI=true" >> example/.env
-      - name: Build example app for iOS
+          rm -f demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_18/.env
+          echo "CI=true" >> demo/expo_react_18/.env
+      - name: Build demo/expo_react_18 app for iOS
         run: |
           yarn build:e2e:ios
 
@@ -64,14 +64,14 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            example/ios/Pods
-            example/ios/Podfile.lock
+            demo/expo_react_18/ios/Pods
+            demo/expo_react_18/ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
 
       - name: Run iOS E2E tests
         uses: dniHze/maestro-test-action@v1
         with:
-          flow: e2e
+          flow: e2e/evaluation.yaml e2e/react_18.yaml
           report: report.xml
 
       - name: Upload iOS E2E test results (report.xml)
@@ -162,10 +162,10 @@ jobs:
 
       - name: Inject environment variables
         run: |
-          rm -f example/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> example/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> example/.env
-          echo "CI=true" >> example/.env
+          rm -f demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_18/.env
+          echo "CI=true" >> demo/expo_react_18/.env
 
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
@@ -183,4 +183,4 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
           # Run tests with sharding
-          script: yarn build:e2e:android && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: yarn build:e2e:android && maestro test e2e/evaluation.yaml e2e/react_18.yaml --format=junit --output=report.xml --no-ansi
