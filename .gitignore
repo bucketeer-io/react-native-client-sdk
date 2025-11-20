@@ -93,3 +93,5 @@ demo/expo_react_19/.env
 demo/expo_react_18/.env
 report.xml
 src/version.ts
+
+**/.env
