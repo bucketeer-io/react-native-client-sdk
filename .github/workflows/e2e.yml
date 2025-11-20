@@ -72,10 +72,8 @@ jobs:
         uses: dniHze/maestro-test-action@v1
         with:
           version: 2.0.10
-      - name: Run iOS E2e tests
-        run: |
-          yarn build:e2e:ios && maestro test e2e/evaluations.yaml e2e/react_18.yaml --format=junit --output=report.xml --no-ansi
-      
+          flow: e2e
+          report: report.xml
 
       - name: Upload iOS E2E test results (report.xml)
         uses: actions/upload-artifact@v4
@@ -174,7 +172,7 @@ jobs:
         uses: dniHze/maestro-test-action@v1
         with:
           version: 2.0.10
-      - name: Run Android E2e tests
+      - name: Run Android integration tests
         env:
           # Optimized Gradle options for CI
           GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
@@ -188,4 +186,4 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
           # Run tests with sharding
-          script: yarn build:e2e:android && maestro test e2e/evaluations.yaml e2e/react_18.yaml --format=junit --output=report.xml --no-ansi
+          script: yarn build:e2e:android && maestro test e2e --format=junit --output=report.xml --no-ansi
