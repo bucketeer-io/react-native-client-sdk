@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - feat/init-sdk
+      - feat/support-react-19
   workflow_dispatch:
   workflow_call:
 
