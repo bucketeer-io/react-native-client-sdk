@@ -33,11 +33,11 @@
   ],
   "scripts": {
     "prebuild": "node -p \"'export const SDK_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
-    "example": "yarn prebuild; yarn workspace react-native-client-sdk-example",
+    "example": "yarn prebuild; yarn workspace demo/expo_react_19",
     "test": "yarn prebuild; jest",
     "test:e2e": "maestro test e2e --format=junit --output=report.xml --no-ansi",
-    "build:e2e:ios": "yarn prebuild; yarn example ios --configuration Release --no-bundler ",
-    "build:e2e:android": "yarn prebuild; yarn example android --variant release --no-bundler",
+    "build:e2e:ios": "yarn prebuild; yarn demo/expo_react_19 ios --configuration Release --no-bundler ",
+    "build:e2e:android": "yarn prebuild; yarn demo/expo_react_19 android --variant release --no-bundler",
     "typecheck": "yarn prebuild; tsc",
     "lint": "yarn prebuild; eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
@@ -96,7 +96,8 @@
     "react-native": "^0.76.0"
   },
   "workspaces": [
-    "example"
+    "demo/expo_react_19",
+    "demo/expo_react_18"
   ],
   "packageManager": "yarn@3.6.1",
   "commitlint": {
