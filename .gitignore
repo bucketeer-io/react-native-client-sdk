@@ -44,9 +44,13 @@ android.iml
 # Cocoapods
 #
 example/ios/Pods
+demo/expo_react_19/ios/Pods
+demo/expo_react_18/ios/Pods
 
 # Ruby
 example/vendor/
+demo/expo_react_19/vendor
+demo/expo_react_18/vendor
 
 # node.js
 #
@@ -85,5 +89,7 @@ android/generated
 # React Native Nitro Modules
 nitrogen/
 example/.env
+demo/expo_react_19/.env
+demo/expo_react_18/.env
 report.xml
 src/version.ts
