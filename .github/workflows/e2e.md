@@ -31,16 +31,16 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            demo/expo_react_19/ios/Pods
-            demo/expo_react_19/ios/Podfile.lock
-          key: ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_19/ios/Podfile.lock') }}
+            demo/expo_react_18/ios/Pods
+            demo/expo_react_18/ios/Podfile.lock
+          key: ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_18/ios/Podfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_19/ios/Podfile.lock') }}
+            ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_18/ios/Podfile.lock') }}
             ${{ runner.os }}-pods-
 
       - name: Install CocoaPods dependencies
         run: |
-          cd demo/expo_react_19/ios
+          cd demo/expo_react_18/ios
           pod install
           cd ../..
           
@@ -51,21 +51,21 @@ jobs:
 
       - name: Inject environment variables
         run: |
-          rm -f demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_19/.env
-          echo "CI=true" >> demo/expo_react_19/.env
-      - name: Build demo/expo_react_19 app for iOS
+          rm -f demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_18/.env
+          echo "CI=true" >> demo/expo_react_18/.env
+      - name: Build demo/expo_react_18 app for iOS
         run: |
-          yarn build:e2e:ios:react19
+          yarn build:e2e:ios
 
       - name: Cache cocoapods dependencies
         if: steps.cocoapods-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
-            demo/expo_react_19/ios/Pods
-            demo/expo_react_19/ios/Podfile.lock
+            demo/expo_react_18/ios/Pods
+            demo/expo_react_18/ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
 
       - name: Run iOS E2E tests
@@ -163,10 +163,10 @@ jobs:
 
       - name: Inject environment variables
         run: |
-          rm -f demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_19/.env
-          echo "CI=true" >> demo/expo_react_19/.env
+          rm -f demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_18/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_18/.env
+          echo "CI=true" >> demo/expo_react_18/.env
 
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
@@ -186,4 +186,4 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
           # Run tests with sharding
-          script: yarn build:e2e:android:react19 && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: yarn build:e2e:android && maestro test e2e --format=junit --output=report.xml --no-ansi
