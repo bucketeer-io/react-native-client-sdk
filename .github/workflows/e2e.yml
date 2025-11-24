@@ -30,8 +30,6 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        with:
-          cache-key-suffix: -react${{ matrix.react-version }}
 
       - name: Build package
         run: |
@@ -128,8 +126,6 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        with:
-          cache-key-suffix: -react${{ matrix.react-version }}
 
       - name: Build package
         run: |
