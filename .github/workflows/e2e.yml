@@ -15,8 +15,13 @@ jobs:
   build-ios:
     runs-on: macos-15-xlarge
     timeout-minutes: 45
+    strategy:
+      matrix:
+        react-version: [18, 19]
+      fail-fast: false
     env:
       XCODE_VERSION: '26.0.1'
+      # E2e - maestro framework is not working with iOS 26 simulators properly yet.
       IOS_DEVICE_ID: '8354E9A3-172D-4B54-A234-6369EAF61656' # iPhone 16 Pro - iOS 18.6
     steps:
       - name: Checkout
@@ -43,54 +48,55 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            demo/expo_react_19/ios/Pods
-            demo/expo_react_19/ios/Podfile.lock
-          key: ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_19/ios/Podfile.lock') }}
+            demo/expo_react_${{ matrix.react-version }}/ios/Pods
+            demo/expo_react_${{ matrix.react-version }}/ios/Podfile.lock
+          key: ${{ runner.os }}-pods-react${{ matrix.react-version }}-${{ hashFiles(format('demo/expo_react_{0}/ios/Podfile.lock', matrix.react-version)) }}
           restore-keys: |
-            ${{ runner.os }}-pods-${{ hashFiles('demo/expo_react_19/ios/Podfile.lock') }}
-            ${{ runner.os }}-pods-
+            ${{ runner.os }}-pods-react${{ matrix.react-version }}-${{ hashFiles(format('demo/expo_react_{0}/ios/Podfile.lock', matrix.react-version)) }}
+            ${{ runner.os }}-pods-react${{ matrix.react-version }}-
 
       - name: Install CocoaPods dependencies
         run: |
-          cd demo/expo_react_19/ios
+          cd demo/expo_react_${{ matrix.react-version }}/ios
           pod install
           cd ../..
           
       - uses: irgaly/xcode-cache@v1
         with:
-          key: xcode-cache-deriveddata-${{ github.workflow }}-${{ github.sha }}
-          restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-
+          key: xcode-cache-deriveddata-${{ github.workflow }}-react${{ matrix.react-version }}-${{ github.sha }}
+          restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-react${{ matrix.react-version }}-
 
       - name: Inject environment variables
         run: |
-          rm -f demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_19/.env
-          echo "CI=true" >> demo/expo_react_19/.env
-      - name: Build demo/expo_react_19 app for iOS
+          rm -f demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
+
+      - name: Build demo app for iOS (React ${{ matrix.react-version }})
         run: |
-          yarn build:e2e:ios:react19
+          yarn build:e2e:ios:react${{ matrix.react-version }}
 
       - name: Cache cocoapods dependencies
         if: steps.cocoapods-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
-            demo/expo_react_19/ios/Pods
-            demo/expo_react_19/ios/Podfile.lock
+            demo/expo_react_${{ matrix.react-version }}/ios/Pods
+            demo/expo_react_${{ matrix.react-version }}/ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
 
-      - name: Run iOS E2E tests
+      - name: Run iOS E2E tests (React ${{ matrix.react-version }})
         uses: dniHze/maestro-test-action@v1
         with:
           version: 2.0.10
           flow: e2e
           report: report.xml
 
-      - name: Upload iOS E2E test results (report.xml)
+      - name: Upload iOS E2E test results (React ${{ matrix.react-version }})
         uses: actions/upload-artifact@v4
         with:
-          name: e2e-ios-results
+          name: e2e-ios-react${{ matrix.react-version }}-results
           path: report.xml
 
   build-android:
@@ -106,6 +112,7 @@ jobs:
           - x86_64
         cores:
           - 8
+        react-version: [18, 19]
       fail-fast: false
     steps:
       - name: Checkout
@@ -155,11 +162,13 @@ jobs:
           restore-keys: |
             avd-${{ matrix.api-level }}-${{ matrix.target }}-
             avd-${{ matrix.api-level }}-
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
@@ -175,16 +184,17 @@ jobs:
 
       - name: Inject environment variables
         run: |
-          rm -f demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_19/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_19/.env
-          echo "CI=true" >> demo/expo_react_19/.env
+          rm -f demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
 
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
         with:
           version: 2.0.10
-      - name: Run Android integration tests
+
+      - name: Run Android integration tests (React ${{ matrix.react-version }})
         env:
           # Optimized Gradle options for CI
           GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
@@ -198,4 +208,10 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
           # Run tests with sharding
-          script: yarn build:e2e:android:react19 && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: yarn build:e2e:android:react${{ matrix.react-version }} && maestro test e2e --format=junit --output=report.xml --no-ansi
+
+      - name: Upload Android E2E test results (React ${{ matrix.react-version }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-android-react${{ matrix.react-version }}-results
+          path: report.xml
