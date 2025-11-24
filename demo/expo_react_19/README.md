@@ -8,3 +8,5 @@ Use this project to:
 - Perform manual testing and exploration
 
 Refer to the setup instructions in this folder to get started.
+
+https://github.com/facebook/react-native/issues/51387
