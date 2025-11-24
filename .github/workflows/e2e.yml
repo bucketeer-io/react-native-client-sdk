@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-15-xlarge
     timeout-minutes: 45
     env:
-      XCODE_VERSION: '16.4'
+      XCODE_VERSION: '26.0.1'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
