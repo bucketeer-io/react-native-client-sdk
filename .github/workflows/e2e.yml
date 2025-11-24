@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 45
     env:
       XCODE_VERSION: '26.0.1'
+      IOS_DEVICE_ID: '8354E9A3-172D-4B54-A234-6369EAF61656' # iPhone 16 Pro - iOS 18.6
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,14 +35,8 @@ jobs:
       - name: Boot iPhone Simulator
         run: |
           xcrun simctl list devices available
-          DEVICE_ID=$(xcrun simctl list devices available | grep "iPhone" | head -1 | grep -o "([A-F0-9\\-]*)" | tr -d "()")
-          if [ -z "$DEVICE_ID" ]; then
-            echo "No iPhone simulators available!"
-            exit 1
-          fi
-          xcrun simctl boot "$DEVICE_ID" || echo "Simulator may already be booted"
-          sleep 15
-          echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
+          xcrun simctl boot ${{ env.IOS_DEVICE_ID }} || echo "Simulator may already be booted"
+          sleep 10
 
       - name: Restore CocoaPods cache
         id: cocoapods-cache
