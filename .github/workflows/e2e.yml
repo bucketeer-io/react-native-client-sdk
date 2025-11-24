@@ -33,6 +33,7 @@ jobs:
 
       - name: Boot iPhone Simulator
         run: |
+          xcrun simctl list devices available
           DEVICE_ID=$(xcrun simctl list devices available | grep "iPhone" | head -1 | grep -o "([A-F0-9\\-]*)" | tr -d "()")
           if [ -z "$DEVICE_ID" ]; then
             echo "No iPhone simulators available!"
