@@ -35,6 +35,10 @@ jobs:
         run: |
           yarn build
 
+      - name: Prepare Expo prebuild for the demo app - React ${{ matrix.react-version }}
+        run: |
+          yarn demo/expo_react_${{ matrix.react-version }} prebuild
+
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_${{ env.XCODE_VERSION }}.app/Contents/Developer'
 
@@ -131,6 +135,10 @@ jobs:
         run: |
           yarn build
 
+      - name: Prepare Expo prebuild for the demo app - React ${{ matrix.react-version }}
+        run: |
+          yarn demo/expo_react_${{ matrix.react-version }} prebuild
+
       - name: Set up JDK 17
         uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
@@ -199,10 +207,6 @@ jobs:
         uses: dniHze/maestro-test-action@v1
         with:
           version: 2.0.10
-
-      - name: Prepare Expo prebuild for React ${{ matrix.react-version }}
-        run: |
-          yarn demo/expo_react_${{ matrix.react-version }} prebuild
 
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
