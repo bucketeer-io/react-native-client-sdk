@@ -95,3 +95,8 @@ report.xml
 src/version.ts
 
 **/.env
+
+demo/expo_react_19/ios/
+demo/expo_react_18/ios/
+demo/expo_react_19/android
+demo/expo_react_18/android
