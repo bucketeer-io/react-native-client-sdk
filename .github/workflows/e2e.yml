@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         react-version: [18, 19]
-      fail-fast: false
+      fail-fast: true
     env:
       XCODE_VERSION: '26.0.1'
       # E2e - maestro framework is not working with iOS 26 simulators properly yet.
@@ -123,7 +123,7 @@ jobs:
         cores:
           - 8
         react-version: [18, 19]
-      fail-fast: false
+      fail-fast: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
