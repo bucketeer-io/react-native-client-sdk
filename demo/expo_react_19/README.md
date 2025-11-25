@@ -9,4 +9,5 @@ Use this project to:
 
 Refer to the setup instructions in this folder to get started.
 
-https://github.com/facebook/react-native/issues/51387
+- Run `yarn prebuild` to set up the project with Expo prebuild
+- Run `yarn start` to start the Expo development server

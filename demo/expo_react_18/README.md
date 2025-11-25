@@ -8,3 +8,6 @@ Use this project to:
 - Perform manual testing and exploration
 
 Refer to the setup instructions in this folder to get started.
+
+- Run `yarn prebuild` to set up the project with Expo prebuild
+- Run `yarn start` to start the Expo development server

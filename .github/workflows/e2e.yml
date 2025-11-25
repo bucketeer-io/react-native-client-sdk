@@ -199,6 +199,10 @@ jobs:
         with:
           version: 2.0.10
 
+      - name: Prepare Expo prebuild for React ${{ matrix.react-version }}
+        run: |
+          yarn demo/expo_react_${{ matrix.react-version }} prebuild
+
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
