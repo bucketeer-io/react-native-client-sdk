@@ -25,9 +25,11 @@ npm install @bucketeer/react-native-client-sdk @bucketeer/react-client-sdk @buck
 
 **React Version Support:**
 - ✅ **Supported Versions:** 
-  - React Native 0.76.0 - 0.78.x (requires React 18.2.0)
+  - React Native 0.76.0 - 0.78.x (requires React 18.2.0 ~ 18.3.x)
   - React Native 0.79.0+ (requires React 19.0.0+)
 - ⚠️ **Untested:** React 18.0.0 - 18.1.x may work but are not officially supported
+
+- For Expo projects, make sure you are using Expo version 54.0.0 or later for React Native 0.79.0+ and React 19.0.0+ support.
 
 ### AsyncStorage Dependency
 
