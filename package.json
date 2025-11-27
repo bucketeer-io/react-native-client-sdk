@@ -33,11 +33,14 @@
   ],
   "scripts": {
     "prebuild": "node -p \"'export const SDK_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
-    "example": "yarn prebuild; yarn workspace react-native-client-sdk-example",
     "test": "yarn prebuild; jest",
     "test:e2e": "maestro test e2e --format=junit --output=report.xml --no-ansi",
-    "build:e2e:ios": "yarn prebuild; yarn example ios --configuration Release --no-bundler ",
-    "build:e2e:android": "yarn prebuild; yarn example android --variant release --no-bundler",
+    "build:e2e:ios": "yarn build:e2e:ios:react18",
+    "build:e2e:android": "yarn build:e2e:android:react18",
+    "build:e2e:ios:react18": "yarn prebuild; yarn demo/expo_react_18 ios --configuration Release --no-bundler ",
+    "build:e2e:android:react18": "yarn prebuild; yarn demo/expo_react_18 android --variant release --no-bundler",
+    "build:e2e:ios:react19": "yarn prebuild; yarn demo/expo_react_19 ios --configuration Release --no-bundler ",
+    "build:e2e:android:react19": "yarn prebuild; yarn demo/expo_react_19 android --variant release --no-bundler",
     "typecheck": "yarn prebuild; tsc",
     "lint": "yarn prebuild; eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
@@ -62,10 +65,11 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@bucketeer/react-client-sdk": "0.0.2",
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
+    "@bucketeer/js-client-sdk": "^2.4.0",
+    "@bucketeer/react-client-sdk": "^0.1.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.0",
@@ -89,12 +93,14 @@
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
+    "@bucketeer/react-client-sdk": ">=0.1.0 < 1.0.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "react": ">=18.2.0 || ^19.0.0",
+    "react": ">=18.2.0 < 20.0.0",
     "react-native": "^0.76.0"
   },
   "workspaces": [
-    "example"
+    "demo/expo_react_19",
+    "demo/expo_react_18"
   ],
   "packageManager": "yarn@3.6.1",
   "commitlint": {

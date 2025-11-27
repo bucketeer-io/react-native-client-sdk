@@ -18,17 +18,18 @@ For documentation related to flags management in Bucketeer, refer to the [Bucket
 ## Installation
 
 ```sh
-npm install @bucketeer/react-native-client-sdk
+npm install @bucketeer/react-native-client-sdk @bucketeer/react-client-sdk @bucketeer/js-client-sdk
 ```
 
+- The `@bucketeer/js-client-sdk` and `@bucketeer/react-client-sdk` are peer dependencies and must be installed separately.
+
 **React Version Support:**
-- ✅ **Supported:** 
-  - React 18.2.0 - 18.3.x
-  - React Native 0.76.0 - 0.78.x
-- ⚠️ **May work:** React 18.0.0 - 18.1.x (not officially supported)
-- ❌ **Not supported:** 
-  - React 19.0.0 and above
-  - React Native 0.79.0 and above as it uses React 19.0.0
+- ✅ **Supported Versions:** 
+  - React Native 0.76.0 - 0.78.x (requires React 18.2.0 ~ 18.3.x)
+  - React Native 0.79.0+ (requires React 19.0.0+)
+- ⚠️ **Untested:** React 18.0.0 - 18.1.x may work but are not officially supported
+
+- For Expo projects, make sure you are using Expo version 54.0.0 or later for React Native 0.79.0+ and React 19.0.0+ support.
 
 ### AsyncStorage Dependency
 
