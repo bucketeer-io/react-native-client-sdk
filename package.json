@@ -68,7 +68,7 @@
     "react-native-uuid": "^2.0.3"
   },
   "devDependencies": {
-    "@bucketeer/js-client-sdk": "^2.4.0",
+    "@bucketeer/js-client-sdk": "^2.6.1",
     "@bucketeer/react-client-sdk": "^0.1.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/compat": "^1.2.7",

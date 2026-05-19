@@ -10,7 +10,7 @@
     "prebuild": "EXPO_NO_GIT_STATUS=1 npx expo prebuild --clean"
   },
   "dependencies": {
-    "@bucketeer/js-client-sdk": "^2.4.0",
+    "@bucketeer/js-client-sdk": "^2.6.1",
     "@bucketeer/react-client-sdk": "^0.1.0",
     "@expo/metro-runtime": "6.1.2",
     "@react-native-async-storage/async-storage": "^1.23.1",
