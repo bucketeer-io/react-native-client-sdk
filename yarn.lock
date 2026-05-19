@@ -1734,12 +1734,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bucketeer/js-client-sdk@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@bucketeer/js-client-sdk@npm:2.4.0"
+"@bucketeer/js-client-sdk@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "@bucketeer/js-client-sdk@npm:2.6.1"
   dependencies:
     async-mutex: 0.5.0
-  checksum: b0c8c7a460775750bf7baf91fe66663504a7fc3495ca2bfb23ee0ce0f2d9c433735d005d04c2284672745a3c1c0bc51568c56ed43dcfa61eaf194abdadc34b2a
+  checksum: e54571281de5bcf138b2fc37ea7bbe744548a47ee44d3867c12c00ea1b3e7fd33620e662f326e3387f6c2e241b9b1bea0afd6ebcb6d2db088284ff21e3151e46
   languageName: node
   linkType: hard
 
@@ -1758,7 +1758,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bucketeer/react-native-client-sdk@workspace:."
   dependencies:
-    "@bucketeer/js-client-sdk": ^2.4.0
+    "@bucketeer/js-client-sdk": ^2.6.1
     "@bucketeer/react-client-sdk": ^0.1.0
     "@commitlint/config-conventional": ^19.6.0
     "@eslint/compat": ^1.2.7
@@ -7211,7 +7211,7 @@ __metadata:
   resolution: "expo_react_18@workspace:demo/expo_react_18"
   dependencies:
     "@babel/core": ^7.20.0
-    "@bucketeer/js-client-sdk": ^2.4.0
+    "@bucketeer/js-client-sdk": ^2.6.1
     "@bucketeer/react-client-sdk": ^0.1.0
     "@expo/metro-runtime": ~4.0.1
     "@react-native-async-storage/async-storage": ^1.23.1
@@ -7231,7 +7231,7 @@ __metadata:
   resolution: "expo_react_19@workspace:demo/expo_react_19"
   dependencies:
     "@babel/core": ^7.20.0
-    "@bucketeer/js-client-sdk": ^2.4.0
+    "@bucketeer/js-client-sdk": ^2.6.1
     "@bucketeer/react-client-sdk": ^0.1.0
     "@expo/metro-runtime": 6.1.2
     "@react-native-async-storage/async-storage": ^1.23.1
