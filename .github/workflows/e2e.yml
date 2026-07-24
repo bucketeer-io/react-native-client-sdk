@@ -44,7 +44,7 @@ jobs:
         id: app-cache
         uses: actions/cache/restore@v4
         with:
-          path: demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator/*.app
+          path: build-artifacts/ios-react${{ matrix.react-version }}
           key: demo-app-ios-react${{ matrix.react-version }}-${{ hashFiles('src/**', 'package.json', 'yarn.lock', format('demo/expo_react_{0}/**', matrix.react-version), format('!demo/expo_react_{0}/node_modules/**', matrix.react-version), format('!demo/expo_react_{0}/android/**', matrix.react-version), format('!demo/expo_react_{0}/ios/**', matrix.react-version), format('demo/expo_react_{0}/.env', matrix.react-version)) }}-v1
 
       - name: Setup
@@ -103,6 +103,20 @@ jobs:
         run: |
           yarn build:e2e:ios:react${{ matrix.react-version }}
 
+      # expo run:ios builds into the default Xcode DerivedData location;
+      # copy the .app to a stable path so it can be cached and installed from there
+      - name: Stage built demo app
+        if: steps.app-cache.outputs.cache-hit != 'true'
+        run: |
+          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -type d -name "*.app" -path "*Release-iphonesimulator*" -print0 | xargs -0 ls -td 2>/dev/null | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app bundle found in DerivedData" >&2
+            exit 1
+          fi
+          echo "Staging $APP_PATH"
+          mkdir -p build-artifacts/ios-react${{ matrix.react-version }}
+          cp -R "$APP_PATH" build-artifacts/ios-react${{ matrix.react-version }}/
+
       - name: Cache cocoapods dependencies
         if: steps.app-cache.outputs.cache-hit != 'true' && steps.cocoapods-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
@@ -116,13 +130,13 @@ jobs:
         if: steps.app-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator/*.app
+          path: build-artifacts/ios-react${{ matrix.react-version }}
           key: ${{ steps.app-cache.outputs.cache-primary-key }}
 
       # Needed on the cache-hit path (no build ran); harmless re-install otherwise.
       - name: Install demo app to simulator
         run: |
-          APP_PATH=$(find demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator -maxdepth 1 -name "*.app" -type d | head -n 1)
+          APP_PATH=$(find build-artifacts/ios-react${{ matrix.react-version }} -maxdepth 1 -name "*.app" -type d | head -n 1)
           if [ -z "$APP_PATH" ]; then
             echo "No .app bundle found" >&2
             exit 1
