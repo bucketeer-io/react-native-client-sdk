@@ -28,16 +28,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Injected before the app cache lookup so the cache key includes the
+      # .env contents: rotating the e2e key/endpoint invalidates the cache.
+      - name: Inject environment variables
+        run: |
+          rm -f demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
+
+      # Reuse the built demo app when nothing that affects it has changed
+      # (typical for e2e runs triggered by backend deployments). On a cache
+      # hit the whole build chain below is skipped.
+      - name: Restore demo app cache
+        id: app-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator/*.app
+          key: demo-app-ios-react${{ matrix.react-version }}-${{ hashFiles('src/**', 'package.json', 'yarn.lock', format('demo/expo_react_{0}/**', matrix.react-version), format('!demo/expo_react_{0}/node_modules/**', matrix.react-version), format('!demo/expo_react_{0}/android/**', matrix.react-version), format('!demo/expo_react_{0}/ios/**', matrix.react-version), format('demo/expo_react_{0}/.env', matrix.react-version)) }}-v1
+
       - name: Setup
+        if: steps.app-cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/setup
 
       - name: Build package
+        if: steps.app-cache.outputs.cache-hit != 'true'
         run: |
           yarn build
 
+      # --no-install: node modules are already installed by Setup, and pods
+      # are installed by the dedicated step below (avoids a duplicate pod install)
       - name: Prepare Expo prebuild for the demo app - React ${{ matrix.react-version }}
+        if: steps.app-cache.outputs.cache-hit != 'true'
         run: |
-          yarn demo/expo_react_${{ matrix.react-version }} prebuild
+          yarn demo/expo_react_${{ matrix.react-version }} prebuild --no-install
 
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_${{ env.XCODE_VERSION }}.app/Contents/Developer'
@@ -49,6 +73,7 @@ jobs:
           sleep 10
 
       - name: Restore CocoaPods cache
+        if: steps.app-cache.outputs.cache-hit != 'true'
         id: cocoapods-cache
         uses: actions/cache/restore@v4
         with:
@@ -61,35 +86,49 @@ jobs:
             ${{ runner.os }}-pods-react${{ matrix.react-version }}-
 
       - name: Install CocoaPods dependencies
+        if: steps.app-cache.outputs.cache-hit != 'true'
         run: |
           cd demo/expo_react_${{ matrix.react-version }}/ios
           pod install
           cd ../..
-          
+
       - uses: irgaly/xcode-cache@v1
+        if: steps.app-cache.outputs.cache-hit != 'true'
         with:
           key: xcode-cache-deriveddata-${{ github.workflow }}-react${{ matrix.react-version }}-${{ github.sha }}
           restore-keys: xcode-cache-deriveddata-${{ github.workflow }}-react${{ matrix.react-version }}-
 
-      - name: Inject environment variables
-        run: |
-          rm -f demo/expo_react_${{ matrix.react-version }}/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
-          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
-
       - name: Build demo app for iOS (React ${{ matrix.react-version }})
+        if: steps.app-cache.outputs.cache-hit != 'true'
         run: |
           yarn build:e2e:ios:react${{ matrix.react-version }}
 
       - name: Cache cocoapods dependencies
-        if: steps.cocoapods-cache.outputs.cache-hit != 'true'
+        if: steps.app-cache.outputs.cache-hit != 'true' && steps.cocoapods-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
             demo/expo_react_${{ matrix.react-version }}/ios/Pods
             demo/expo_react_${{ matrix.react-version }}/ios/Podfile.lock
           key: ${{ steps.cocoapods-cache.outputs.cache-primary-key }}
+
+      - name: Save demo app cache
+        if: steps.app-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator/*.app
+          key: ${{ steps.app-cache.outputs.cache-primary-key }}
+
+      # Needed on the cache-hit path (no build ran); harmless re-install otherwise.
+      - name: Install demo app to simulator
+        run: |
+          APP_PATH=$(find demo/expo_react_${{ matrix.react-version }}/ios/build/Build/Products/Release-iphonesimulator -maxdepth 1 -name "*.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app bundle found" >&2
+            exit 1
+          fi
+          echo "Installing $APP_PATH"
+          xcrun simctl install ${{ env.IOS_DEVICE_ID }} "$APP_PATH"
 
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
@@ -128,24 +167,49 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Injected before the APK cache lookup so the cache key includes the
+      # .env contents: rotating the e2e key/endpoint invalidates the cache.
+      - name: Inject environment variables
+        run: |
+          rm -f demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
+          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
+
+      # Reuse the built APK when nothing that affects it has changed
+      # (typical for e2e runs triggered by backend deployments). On a cache
+      # hit the whole build chain below is skipped.
+      - name: Restore demo APK cache
+        id: apk-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk
+          key: demo-app-android-react${{ matrix.react-version }}-${{ hashFiles('src/**', 'package.json', 'yarn.lock', format('demo/expo_react_{0}/**', matrix.react-version), format('!demo/expo_react_{0}/node_modules/**', matrix.react-version), format('!demo/expo_react_{0}/android/**', matrix.react-version), format('!demo/expo_react_{0}/ios/**', matrix.react-version), format('demo/expo_react_{0}/.env', matrix.react-version)) }}-v1
+
       - name: Setup
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: ./.github/actions/setup
 
       - name: Build package
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         run: |
           yarn build
 
+      # --no-install: node modules are already installed by Setup
       - name: Prepare Expo prebuild for the demo app - React ${{ matrix.react-version }}
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         run: |
-          yarn demo/expo_react_${{ matrix.react-version }} prebuild
+          yarn demo/expo_react_${{ matrix.react-version }} prebuild --no-install
 
       - name: Set up JDK 17
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: "temurin"
           java-version: 17
 
       - name: Setup gradle
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         id: gradle
         continue-on-error: true
@@ -158,11 +222,30 @@ jobs:
 
       # Retry gradle setup if it failed (usually due to cache timeout)
       - name: Retry Setup gradle
-        if: steps.gradle.outcome == 'failure'
+        if: steps.apk-cache.outputs.cache-hit != 'true' && steps.gradle.outcome == 'failure'
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
           cache-read-only: false
           cache-disabled: true  # Disable cache on retry to avoid timeout
+
+      # Build the APK before booting the emulator so Gradle gets the full CPU.
+      # The maestro flow launches the app itself (launchApp), so the emulator
+      # step below only needs the APK installed, not `expo run:android`.
+      - name: Build demo app for Android (React ${{ matrix.react-version }})
+        if: steps.apk-cache.outputs.cache-hit != 'true'
+        env:
+          # Optimized Gradle options for CI
+          GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+        run: |
+          cd demo/expo_react_${{ matrix.react-version }}/android
+          ./gradlew assembleRelease --stacktrace --build-cache
+
+      - name: Save demo APK cache
+        if: steps.apk-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk
+          key: ${{ steps.apk-cache.outputs.cache-primary-key }}
 
       - name: AVD cache
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
@@ -194,24 +277,6 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048 -no-snapshot-load
           disable-animations: true
           script: echo "Generated AVD snapshot for caching"
-
-      - name: Inject environment variables
-        run: |
-          rm -f demo/expo_react_${{ matrix.react-version }}/.env
-          echo "EXPO_PUBLIC_BKT_API_ENDPOINT=${{ secrets.E2E_API_ENDPOINT }}" >> demo/expo_react_${{ matrix.react-version }}/.env
-          echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
-          echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
-
-      # Build the APK before booting the emulator so Gradle gets the full CPU.
-      # The maestro flow launches the app itself (launchApp), so the emulator
-      # step below only needs the APK installed, not `expo run:android`.
-      - name: Build demo app for Android (React ${{ matrix.react-version }})
-        env:
-          # Optimized Gradle options for CI
-          GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
-        run: |
-          cd demo/expo_react_${{ matrix.react-version }}/android
-          ./gradlew assembleRelease --stacktrace --build-cache
 
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
