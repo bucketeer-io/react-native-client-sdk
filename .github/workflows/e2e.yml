@@ -150,7 +150,7 @@ jobs:
         id: gradle
         continue-on-error: true
         with:
-          gradle-home-cache-cleanup: true
+          cache-cleanup: on-success
           cache-read-only: false
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2  # Reduce timeout from default 5 minutes
@@ -161,7 +161,6 @@ jobs:
         if: steps.gradle.outcome == 'failure'
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-home-cache-cleanup: true
           cache-read-only: false
           cache-disabled: true  # Disable cache on retry to avoid timeout
 
@@ -203,6 +202,17 @@ jobs:
           echo "EXPO_PUBLIC_BKT_API_KEY=${{ secrets.E2E_API_KEY }}" >> demo/expo_react_${{ matrix.react-version }}/.env
           echo "CI=true" >> demo/expo_react_${{ matrix.react-version }}/.env
 
+      # Build the APK before booting the emulator so Gradle gets the full CPU.
+      # The maestro flow launches the app itself (launchApp), so the emulator
+      # step below only needs the APK installed, not `expo run:android`.
+      - name: Build demo app for Android (React ${{ matrix.react-version }})
+        env:
+          # Optimized Gradle options for CI
+          GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+        run: |
+          cd demo/expo_react_${{ matrix.react-version }}/android
+          ./gradlew assembleRelease --stacktrace --build-cache
+
       - name: Setup Maestro
         uses: dniHze/maestro-test-action@v1
         with:
@@ -213,9 +223,6 @@ jobs:
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
 
       - name: Run Android integration tests (React ${{ matrix.react-version }})
-        env:
-          # Optimized Gradle options for CI
-          GRADLE_OPTS: -Dorg.gradle.daemon=true -Dorg.gradle.parallel=true -Dorg.gradle.caching=true -Dorg.gradle.jvmargs="-Xmx2g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
         uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
         with:
           api-level: ${{ matrix.api-level }}
@@ -225,8 +232,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
-          # Run tests with sharding
-          script: yarn build:e2e:android:react${{ matrix.react-version }} && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: adb install -r demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk && maestro test e2e --format=junit --output=report.xml --no-ansi
 
       - name: Upload Android E2E test results (React ${{ matrix.react-version }})
         uses: actions/upload-artifact@v4
