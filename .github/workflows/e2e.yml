@@ -69,8 +69,22 @@ jobs:
       - name: Boot iPhone Simulator
         run: |
           xcrun simctl list devices available
-          xcrun simctl boot ${{ env.IOS_DEVICE_ID }} || echo "Simulator may already be booted"
-          sleep 10
+          # Use the pinned device if it exists on this runner image; otherwise
+          # fall back to any available iPhone on an iOS 18 runtime
+          # (maestro does not work with iOS 26 simulators yet).
+          DEVICE_ID="${{ env.IOS_DEVICE_ID }}"
+          if ! xcrun simctl list devices available | grep -q "$DEVICE_ID"; then
+            echo "Pinned simulator $DEVICE_ID not found, selecting an available iOS 18 iPhone"
+            DEVICE_ID=$(xcrun simctl list -j devices available | jq -r '.devices | to_entries[] | select(.key | contains("iOS-18")) | .value[] | select(.name | startswith("iPhone")) | .udid' | head -n 1)
+          fi
+          if [ -z "$DEVICE_ID" ]; then
+            echo "No suitable iPhone simulator found" >&2
+            exit 1
+          fi
+          echo "Booting simulator $DEVICE_ID"
+          xcrun simctl boot "$DEVICE_ID" || true
+          # Wait until the device is fully booted; fails loudly if it cannot boot
+          xcrun simctl bootstatus "$DEVICE_ID" -b
 
       - name: Restore CocoaPods cache
         if: steps.app-cache.outputs.cache-hit != 'true'
@@ -142,7 +156,8 @@ jobs:
             exit 1
           fi
           echo "Installing $APP_PATH"
-          xcrun simctl install ${{ env.IOS_DEVICE_ID }} "$APP_PATH"
+          # Install to the booted simulator (expo run:ios and maestro target it too)
+          xcrun simctl install booted "$APP_PATH"
 
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
