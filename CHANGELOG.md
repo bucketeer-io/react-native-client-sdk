@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.2](https://github.com/bucketeer-io/react-native-client-sdk/compare/v0.0.1...v0.0.2) (2026-07-30)
+
+
+### Features
+
+* add support for react 19 ([#5](https://github.com/bucketeer-io/react-native-client-sdk/issues/5)) ([fa50d61](https://github.com/bucketeer-io/react-native-client-sdk/commit/fa50d6127e975c1d8eae697363f00d004ae3314a))
+
+
+### Miscellaneous
+
+* update @bucketeer/js-client-sdk to 2.6.1 ([#9](https://github.com/bucketeer-io/react-native-client-sdk/issues/9)) ([8e0c930](https://github.com/bucketeer-io/react-native-client-sdk/commit/8e0c9306ce39d71a31d6debacd5c1d6c43e50f85))
+
 ## [0.0.1](https://github.com/bucketeer-io/react-native-client-sdk/compare/v0.0.1...v0.0.1) (2025-08-07)
 
 
