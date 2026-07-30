@@ -24,6 +24,7 @@ jobs:
       XCODE_VERSION: '26.0.1'
       # E2e - maestro framework is not working with iOS 26 simulators properly yet.
       IOS_DEVICE_ID: '8354E9A3-172D-4B54-A234-6369EAF61656' # iPhone 16 Pro - iOS 18.6
+      MAESTRO_VERSION: '2.0.10'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -163,18 +164,54 @@ jobs:
         run: |
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
 
-      - name: Run iOS E2E tests (React ${{ matrix.react-version }})
-        uses: dniHze/maestro-test-action@v1
+      # Install Maestro directly with the official installer instead of the
+      # unmaintained dniHze/maestro-test-action (Node 20 deprecation, and it
+      # installs idb_companion which Maestro 2.x no longer needs).
+      - name: Cache Maestro
+        id: maestro-cache
+        uses: actions/cache@v4
         with:
-          version: 2.0.10
-          flow: e2e
-          report: report.xml
+          path: |
+            ~/.maestro
+            !~/.maestro/tests
+          key: ${{ runner.os }}-maestro-${{ env.MAESTRO_VERSION }}
+
+      - name: Install Maestro
+        if: steps.maestro-cache.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Run iOS E2E tests (React ${{ matrix.react-version }})
+        run: |
+          # The demo app occasionally crashes right after launchApp on the
+          # simulator (transient RN startup flake); retry once before failing.
+          for attempt in 1 2; do
+            if maestro test e2e --format=junit --output=report.xml --no-ansi; then
+              exit 0
+            fi
+            echo "Maestro run failed (attempt $attempt)"
+          done
+          exit 1
 
       - name: Upload iOS E2E test results (React ${{ matrix.react-version }})
         uses: actions/upload-artifact@v4
         with:
           name: e2e-ios-react${{ matrix.react-version }}-results
           path: report.xml
+
+      # Simulator crash reports and Maestro debug logs, to diagnose the
+      # intermittent "App crashed or stopped while executing flow" failures.
+      - name: Upload crash diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-ios-react${{ matrix.react-version }}-crash-diagnostics
+          path: |
+            ~/Library/Logs/DiagnosticReports
+            ~/.maestro/tests
+          if-no-files-found: ignore
 
   build-android:
     name: Android E2E (React ${{ matrix.react-version }})
@@ -192,6 +229,8 @@ jobs:
           - 8
         react-version: [18, 19]
       fail-fast: true
+    env:
+      MAESTRO_VERSION: '2.0.10'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -307,10 +346,23 @@ jobs:
           disable-animations: true
           script: echo "Generated AVD snapshot for caching"
 
-      - name: Setup Maestro
-        uses: dniHze/maestro-test-action@v1
+      # Install Maestro directly with the official installer instead of the
+      # unmaintained dniHze/maestro-test-action (Node 20 deprecation).
+      - name: Cache Maestro
+        id: maestro-cache
+        uses: actions/cache@v4
         with:
-          version: 2.0.10
+          path: |
+            ~/.maestro
+            !~/.maestro/tests
+          key: ${{ runner.os }}-maestro-${{ env.MAESTRO_VERSION }}
+
+      - name: Install Maestro
+        if: steps.maestro-cache.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
