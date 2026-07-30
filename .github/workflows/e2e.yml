@@ -183,17 +183,10 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
+      # Runs with one retry: the demo app occasionally crashes right after
+      # launchApp on the simulator (transient RN startup flake).
       - name: Run iOS E2E tests (React ${{ matrix.react-version }})
-        run: |
-          # The demo app occasionally crashes right after launchApp on the
-          # simulator (transient RN startup flake); retry once before failing.
-          for attempt in 1 2; do
-            if maestro test e2e --format=junit --output=report.xml --no-ansi; then
-              exit 0
-            fi
-            echo "Maestro run failed (attempt $attempt)"
-          done
-          exit 1
+        run: ./.github/scripts/run-e2e-tests.sh
 
       - name: Upload iOS E2E test results (React ${{ matrix.react-version }})
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -368,6 +361,7 @@ jobs:
         run: |
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
 
+      # The test script runs maestro with one retry (transient app-startup crashes).
       - name: Run Android integration tests (React ${{ matrix.react-version }})
         uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
         with:
@@ -378,7 +372,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
-          script: adb install -r demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: adb install -r demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk && ./.github/scripts/run-e2e-tests.sh
 
       - name: Upload Android E2E test results (React ${{ matrix.react-version }})
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
