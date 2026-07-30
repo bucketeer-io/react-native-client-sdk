@@ -1,4 +1,4 @@
-name: E2e Tests
+name: E2E Tests
 on:
   push:
     branches:
@@ -24,6 +24,7 @@ jobs:
       XCODE_VERSION: '26.0.1'
       # E2e - maestro framework is not working with iOS 26 simulators properly yet.
       IOS_DEVICE_ID: '8354E9A3-172D-4B54-A234-6369EAF61656' # iPhone 16 Pro - iOS 18.6
+      MAESTRO_VERSION: '2.0.10'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,7 +43,7 @@ jobs:
       # hit the whole build chain below is skipped.
       - name: Restore demo app cache
         id: app-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: build-artifacts/ios-react${{ matrix.react-version }}
           key: demo-app-ios-react${{ matrix.react-version }}-${{ hashFiles('src/**', 'package.json', 'yarn.lock', format('demo/expo_react_{0}/**', matrix.react-version), format('!demo/expo_react_{0}/node_modules/**', matrix.react-version), format('!demo/expo_react_{0}/android/**', matrix.react-version), format('!demo/expo_react_{0}/ios/**', matrix.react-version), format('demo/expo_react_{0}/.env', matrix.react-version)) }}-v1
@@ -89,7 +90,7 @@ jobs:
       - name: Restore CocoaPods cache
         if: steps.app-cache.outputs.cache-hit != 'true'
         id: cocoapods-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             demo/expo_react_${{ matrix.react-version }}/ios/Pods
@@ -106,7 +107,7 @@ jobs:
           pod install
           cd ../..
 
-      - uses: irgaly/xcode-cache@v1
+      - uses: irgaly/xcode-cache@4141f139f00e335c6e1031fb93e667181f86146f # v1.9.2
         if: steps.app-cache.outputs.cache-hit != 'true'
         with:
           key: xcode-cache-deriveddata-${{ github.workflow }}-react${{ matrix.react-version }}-${{ github.sha }}
@@ -133,7 +134,7 @@ jobs:
 
       - name: Cache cocoapods dependencies
         if: steps.app-cache.outputs.cache-hit != 'true' && steps.cocoapods-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             demo/expo_react_${{ matrix.react-version }}/ios/Pods
@@ -142,7 +143,7 @@ jobs:
 
       - name: Save demo app cache
         if: steps.app-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: build-artifacts/ios-react${{ matrix.react-version }}
           key: ${{ steps.app-cache.outputs.cache-primary-key }}
@@ -163,18 +164,47 @@ jobs:
         run: |
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
 
-      - name: Run iOS E2E tests (React ${{ matrix.react-version }})
-        uses: dniHze/maestro-test-action@v1
+      # Install Maestro directly with the official installer instead of the
+      # unmaintained dniHze/maestro-test-action (Node 20 deprecation, and it
+      # installs idb_companion which Maestro 2.x no longer needs).
+      - name: Cache Maestro
+        id: maestro-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          version: 2.0.10
-          flow: e2e
-          report: report.xml
+          path: |
+            ~/.maestro
+            !~/.maestro/tests
+          key: ${{ runner.os }}-maestro-${{ env.MAESTRO_VERSION }}
+
+      - name: Install Maestro
+        if: steps.maestro-cache.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      # Runs with one retry: the demo app occasionally crashes right after
+      # launchApp on the simulator (transient RN startup flake).
+      - name: Run iOS E2E tests (React ${{ matrix.react-version }})
+        run: ./.github/scripts/run-e2e-tests.sh
 
       - name: Upload iOS E2E test results (React ${{ matrix.react-version }})
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: e2e-ios-react${{ matrix.react-version }}-results
           path: report.xml
+
+      # Simulator crash reports and Maestro debug logs, to diagnose the
+      # intermittent "App crashed or stopped while executing flow" failures.
+      - name: Upload crash diagnostics
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: e2e-ios-react${{ matrix.react-version }}-crash-diagnostics
+          path: |
+            ~/Library/Logs/DiagnosticReports
+            ~/.maestro/tests
+          if-no-files-found: ignore
 
   build-android:
     name: Android E2E (React ${{ matrix.react-version }})
@@ -185,16 +215,18 @@ jobs:
         api-level:
           - 34
         target:
-          - default  # Faster than google_apis
+          - default # Faster than google_apis
         arch:
           - x86_64
         cores:
           - 8
         react-version: [18, 19]
       fail-fast: true
+    env:
+      MAESTRO_VERSION: '2.0.10'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Injected before the APK cache lookup so the cache key includes the
       # .env contents: rotating the e2e key/endpoint invalidates the cache.
@@ -210,7 +242,7 @@ jobs:
       # hit the whole build chain below is skipped.
       - name: Restore demo APK cache
         id: apk-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk
           key: demo-app-android-react${{ matrix.react-version }}-${{ hashFiles('src/**', 'package.json', 'yarn.lock', format('demo/expo_react_{0}/**', matrix.react-version), format('!demo/expo_react_{0}/node_modules/**', matrix.react-version), format('!demo/expo_react_{0}/android/**', matrix.react-version), format('!demo/expo_react_{0}/ios/**', matrix.react-version), format('demo/expo_react_{0}/.env', matrix.react-version)) }}-v1
@@ -234,7 +266,7 @@ jobs:
         if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
-          distribution: "temurin"
+          distribution: 'temurin'
           java-version: 17
 
       - name: Setup gradle
@@ -246,7 +278,7 @@ jobs:
           cache-cleanup: on-success
           cache-read-only: false
         env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2  # Reduce timeout from default 5 minutes
+          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 2 # Reduce timeout from default 5 minutes
           GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
 
       # Retry gradle setup if it failed (usually due to cache timeout)
@@ -255,7 +287,7 @@ jobs:
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
           cache-read-only: false
-          cache-disabled: true  # Disable cache on retry to avoid timeout
+          cache-disabled: true # Disable cache on retry to avoid timeout
 
       # Build the APK before booting the emulator so Gradle gets the full CPU.
       # The maestro flow launches the app itself (launchApp), so the emulator
@@ -271,7 +303,7 @@ jobs:
 
       - name: Save demo APK cache
         if: steps.apk-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk
           key: ${{ steps.apk-cache.outputs.cache-primary-key }}
@@ -307,15 +339,29 @@ jobs:
           disable-animations: true
           script: echo "Generated AVD snapshot for caching"
 
-      - name: Setup Maestro
-        uses: dniHze/maestro-test-action@v1
+      # Install Maestro directly with the official installer instead of the
+      # unmaintained dniHze/maestro-test-action (Node 20 deprecation).
+      - name: Cache Maestro
+        id: maestro-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          version: 2.0.10
+          path: |
+            ~/.maestro
+            !~/.maestro/tests
+          key: ${{ runner.os }}-maestro-${{ env.MAESTRO_VERSION }}
+
+      - name: Install Maestro
+        if: steps.maestro-cache.outputs.cache-hit != 'true'
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
       - name: Copy E2E test file for React ${{ matrix.react-version }}
         run: |
           cp e2e/react_versions/react_${{ matrix.react-version }}.yml e2e/react_version.yml
 
+      # The test script runs maestro with one retry (transient app-startup crashes).
       - name: Run Android integration tests (React ${{ matrix.react-version }})
         uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
         with:
@@ -326,10 +372,10 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 2048
           disable-animations: true
-          script: adb install -r demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk && maestro test e2e --format=junit --output=report.xml --no-ansi
+          script: adb install -r demo/expo_react_${{ matrix.react-version }}/android/app/build/outputs/apk/release/app-release.apk && ./.github/scripts/run-e2e-tests.sh
 
       - name: Upload Android E2E test results (React ${{ matrix.react-version }})
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: e2e-android-react${{ matrix.react-version }}-results
           path: report.xml
