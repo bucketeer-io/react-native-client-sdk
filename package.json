@@ -34,7 +34,7 @@
   "scripts": {
     "prebuild": "node -p \"'export const SDK_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
     "test": "yarn prebuild; jest",
-    "test:e2e": "maestro test e2e --format=junit --output=report.xml --no-ansi",
+    "test:e2e": "./.github/scripts/run-e2e-tests.sh",
     "build:e2e:ios": "yarn build:e2e:ios:react18",
     "build:e2e:android": "yarn build:e2e:android:react18",
     "build:e2e:ios:react18": "yarn prebuild; yarn demo/expo_react_18 ios --configuration Release --no-bundler ",
