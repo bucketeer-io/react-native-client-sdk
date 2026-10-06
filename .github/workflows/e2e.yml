@@ -183,8 +183,7 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      # Runs with one retry: the demo app occasionally crashes right after
-      # launchApp on the simulator (transient RN startup flake).
+      # Runs flows sequentially with one retry (see run-e2e-tests.sh).
       - name: Run iOS E2E tests (React ${{ matrix.react-version }})
         run: ./.github/scripts/run-e2e-tests.sh
 

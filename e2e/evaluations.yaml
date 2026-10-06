@@ -7,6 +7,8 @@ appId: clientsdk.example
 ---
 # Test String Variation Screen
 - launchApp
+- assertVisible:
+    id: "open-string-screen-button"
 - tapOn:
     id: "open-string-screen-button"
 - assertVisible: "SDK Ready: ✅"
